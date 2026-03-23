@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/auth.routes');
+const listingRoutes = require('./routes/listing.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,6 +20,7 @@ app.use(cookieParser());
 // Routes
 // ---------------------------------------------------------------------------
 app.use('/api/auth', authRoutes);
+app.use('/api/listings', listingRoutes);
 
 // Health check
 app.get('/', (_req, res) => {
@@ -42,4 +44,15 @@ app.use((err, _req, res, _next) => {
 // ---------------------------------------------------------------------------
 app.listen(PORT, () => {
     console.log(`✅ FoodBridge server listening on http://localhost:${PORT}`);
+});
+
+// ---------------------------------------------------------------------------
+// Global safety net — log errors instead of crashing silently
+// ---------------------------------------------------------------------------
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('⚠️  Unhandled Promise Rejection:', reason);
+});
+
+process.on('uncaughtException', (err) => {
+    console.error('💥 Uncaught Exception:', err.message, err.stack);
 });

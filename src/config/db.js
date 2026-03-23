@@ -4,6 +4,12 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
+// CRITICAL: handle idle client errors — without this, a lost DB connection
+// emits an unhandled 'error' event and immediately kills the Node process.
+pool.on('error', (err) => {
+  console.error('Unexpected PostgreSQL pool error:', err.message);
+});
+
 // Auto-create refresh_tokens table if it doesn't exist
 const initDB = async () => {
   await pool.query(`
