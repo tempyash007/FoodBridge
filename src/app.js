@@ -5,6 +5,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/auth.routes');
 const listingRoutes = require('./routes/listing.routes');
+const donorRoutes = require('./routes/donor.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,6 +22,7 @@ app.use(cookieParser());
 // ---------------------------------------------------------------------------
 app.use('/api/auth', authRoutes);
 app.use('/api/listings', listingRoutes);
+app.use('/api/donor', donorRoutes);
 
 // Health check
 app.get('/', (_req, res) => {
