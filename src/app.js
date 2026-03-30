@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/auth.routes');
 const listingRoutes = require('./routes/listing.routes');
 const donorRoutes = require('./routes/donor.routes');
+const recipientRoutes = require('./routes/recipient.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use('/api/auth', authRoutes);
 app.use('/api/listings', listingRoutes);
 app.use('/api/donor', donorRoutes);
+app.use('/api/recipient', recipientRoutes);
 
 // Health check
 app.get('/', (_req, res) => {
