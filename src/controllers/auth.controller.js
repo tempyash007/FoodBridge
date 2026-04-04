@@ -58,6 +58,15 @@ const register = asyncHandler(async (req, res) => {
 
     const user = result.rows[0];
 
+    // Auto-create role-specific profile
+    if (dbRole === 'volunteer') {
+        await pool.query(
+            `INSERT INTO volunteer_profiles (user_id, vehicle_type, max_distance_km, is_available, total_deliveries, avg_rating)
+             VALUES ($1, 'bicycle', 10, true, 0, 0)`,
+            [user.user_id],
+        );
+    }
+
     // Generate tokens & set cookies
     const { accessToken, refreshToken } = await generateTokens(user);
     setTokenCookies(res, accessToken, refreshToken);

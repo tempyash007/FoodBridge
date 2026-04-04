@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth.routes');
 const listingRoutes = require('./routes/listing.routes');
 const donorRoutes = require('./routes/donor.routes');
 const recipientRoutes = require('./routes/recipient.routes');
+const volunteerRoutes = require('./routes/volunteer.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,6 +26,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/listings', listingRoutes);
 app.use('/api/donor', donorRoutes);
 app.use('/api/recipient', recipientRoutes);
+app.use('/api/volunteer', volunteerRoutes);
 
 // Health check
 app.get('/', (_req, res) => {
