@@ -367,19 +367,19 @@ const acceptMission = asyncHandler(async (req, res) => {
        a_pickup.latitude       AS pickup_lat,
        a_pickup.longitude      AS pickup_lng,
        a_pickup.street_address AS pickup_address,
-       o_donor.org_name        AS donor_org,
+       donor_org.org_name      AS donor_org,
        fl.title                AS listing_title,
        fl.quantity,
        fl.quantity_unit,
-       o_recip.org_name        AS recipient_org,
+       recipient_org.org_name  AS recipient_org,
        a_deliv.street_address  AS delivery_address,
        a_deliv.latitude        AS delivery_lat,
        a_deliv.longitude       AS delivery_lng
      FROM food_listings fl
-     JOIN addresses a_pickup     ON fl.address_id  = a_pickup.address_id
-     LEFT JOIN organizations o_donor ON fl.donor_id = o_donor.user_id
-     LEFT JOIN organizations o_recip ON $2          = o_recip.user_id
-     LEFT JOIN addresses a_deliv     ON o_recip.address_id = a_deliv.address_id
+     JOIN addresses a_pickup          ON a_pickup.address_id     = fl.address_id
+     LEFT JOIN organizations donor_org    ON donor_org.user_id   = fl.donor_id
+     LEFT JOIN organizations recipient_org ON recipient_org.user_id = $2
+     LEFT JOIN addresses a_deliv          ON a_deliv.address_id  = recipient_org.address_id
      WHERE fl.listing_id = $1`,
     [claim.listing_id, claim.recipient_id],
   );
@@ -403,73 +403,111 @@ const acceptMission = asyncHandler(async (req, res) => {
   );
   const volLoc = volLocResult.rows[0];
 
-  let routeInfo = { total_km: null, est_duration_min: null, polyline: '' };
+  let routeInfo = { total_km: 0, est_duration_min: 0, polyline: null };
 
-  if (volLoc?.current_latitude && volLoc?.current_longitude) {
-    // Get all active missions for this volunteer (including the new one)
-    const allActiveMissions = await pool.query(
-      `SELECT
-         dm.mission_id,
-         a_pickup.latitude  AS pickup_lat,
-         a_pickup.longitude AS pickup_lng,
-         a_pickup.street_address AS pickup_address,
-         o_donor.org_name   AS donor_org,
-         a_deliv.latitude   AS delivery_lat,
-         a_deliv.longitude  AS delivery_lng,
-         a_deliv.street_address AS delivery_address,
-         o_recip.org_name   AS recipient_org
-       FROM delivery_missions dm
-       JOIN claims c           ON dm.claim_id   = c.claim_id
-       JOIN food_listings fl   ON c.listing_id  = fl.listing_id
-       JOIN addresses a_pickup ON fl.address_id = a_pickup.address_id
-       LEFT JOIN organizations o_donor ON fl.donor_id    = o_donor.user_id
-       LEFT JOIN organizations o_recip ON c.recipient_id = o_recip.user_id
-       LEFT JOIN addresses a_deliv     ON o_recip.address_id = a_deliv.address_id
-       WHERE dm.volunteer_id = $1
-         AND dm.status IN ('assigned', 'in_transit')
-       ORDER BY dm.created_at ASC`,
-      [volunteerId],
-    );
+  // Determine origin: volunteer's current location, or fall back to pickup coords
+  const volLat = volLoc?.current_latitude ? parseFloat(volLoc.current_latitude) : null;
+  const volLng = volLoc?.current_longitude ? parseFloat(volLoc.current_longitude) : null;
 
-    const waypoints = [];
-    for (const m of allActiveMissions.rows) {
+  const pickupLat = addr.pickup_lat ? parseFloat(addr.pickup_lat) : null;
+  const pickupLng = addr.pickup_lng ? parseFloat(addr.pickup_lng) : null;
+  const deliveryLat = addr.delivery_lat ? parseFloat(addr.delivery_lat) : null;
+  const deliveryLng = addr.delivery_lng ? parseFloat(addr.delivery_lng) : null;
+
+  const originLat = volLat ?? pickupLat;
+  const originLng = volLng ?? pickupLng;
+
+  if (originLat && originLng && pickupLat && pickupLng) {
+    const origin = { lat: originLat, lng: originLng };
+
+    // Build waypoints from all active missions (volunteer has location set)
+    // or a direct pickup → delivery pair (fallback)
+    let waypoints = [];
+
+    if (volLat && volLng) {
+      // Full multi-mission route — query all active missions
+      const allActiveMissions = await pool.query(
+        `SELECT
+           dm.mission_id,
+           a_pickup.latitude  AS pickup_lat,
+           a_pickup.longitude AS pickup_lng,
+           a_pickup.street_address AS pickup_address,
+           o_donor.org_name   AS donor_org,
+           a_deliv.latitude   AS delivery_lat,
+           a_deliv.longitude  AS delivery_lng,
+           a_deliv.street_address AS delivery_address,
+           o_recip.org_name   AS recipient_org
+         FROM delivery_missions dm
+         JOIN claims c           ON dm.claim_id   = c.claim_id
+         JOIN food_listings fl   ON c.listing_id  = fl.listing_id
+         JOIN addresses a_pickup ON fl.address_id = a_pickup.address_id
+         LEFT JOIN organizations o_donor ON fl.donor_id    = o_donor.user_id
+         LEFT JOIN organizations o_recip ON c.recipient_id = o_recip.user_id
+         LEFT JOIN addresses a_deliv     ON o_recip.address_id = a_deliv.address_id
+         WHERE dm.volunteer_id = $1
+           AND dm.status IN ('assigned', 'in_transit')
+         ORDER BY dm.created_at ASC`,
+        [volunteerId],
+      );
+
+      for (const m of allActiveMissions.rows) {
+        if (m.pickup_lat && m.pickup_lng) {
+          waypoints.push({
+            lat: parseFloat(m.pickup_lat),
+            lng: parseFloat(m.pickup_lng),
+            name: m.donor_org || 'Pickup',
+            type: 'PICKUP',
+            address: m.pickup_address,
+          });
+        }
+        if (m.delivery_lat && m.delivery_lng) {
+          waypoints.push({
+            lat: parseFloat(m.delivery_lat),
+            lng: parseFloat(m.delivery_lng),
+            name: m.recipient_org || 'Delivery',
+            type: 'DELIVER',
+            address: m.delivery_address,
+          });
+        }
+      }
+    } else {
+      // Fallback — no volunteer location; compute direct pickup → delivery only
       waypoints.push({
-        lat: parseFloat(m.pickup_lat),
-        lng: parseFloat(m.pickup_lng),
-        name: m.donor_org || 'Pickup',
+        lat: pickupLat,
+        lng: pickupLng,
+        name: addr.donor_org || 'Pickup',
         type: 'PICKUP',
-        address: m.pickup_address,
+        address: addr.pickup_address,
       });
-      if (m.delivery_lat && m.delivery_lng) {
+      if (deliveryLat && deliveryLng) {
         waypoints.push({
-          lat: parseFloat(m.delivery_lat),
-          lng: parseFloat(m.delivery_lng),
-          name: m.recipient_org || 'Delivery',
+          lat: deliveryLat,
+          lng: deliveryLng,
+          name: addr.recipient_org || 'Delivery',
           type: 'DELIVER',
-          address: m.delivery_address,
+          address: addr.delivery_address,
         });
       }
     }
 
-    try {
-      const origin = {
-        lat: parseFloat(volLoc.current_latitude),
-        lng: parseFloat(volLoc.current_longitude),
-      };
-
-      routeInfo = await getOptimizedRoute(origin, waypoints);
-
-      // Save route info to the new mission
-      await pool.query(
-        `UPDATE delivery_missions
-         SET route_polyline = $1, est_distance_km = $2, est_duration_min = $3, updated_at = NOW()
-         WHERE mission_id = $4`,
-        [routeInfo.polyline, routeInfo.total_km, routeInfo.est_duration_min, newMission.mission_id],
-      );
-    } catch (err) {
-      console.error('Route optimization failed on accept:', err.message);
+    if (waypoints.length > 0) {
+      try {
+        routeInfo = await getOptimizedRoute(origin, waypoints);
+      } catch (err) {
+        console.error('Route optimization failed on accept:', err.message);
+        routeInfo = { total_km: 0, est_duration_min: 0, polyline: null };
+      }
     }
+
+    // Persist route info to the new mission regardless of which path computed it
+    await pool.query(
+      `UPDATE delivery_missions
+       SET route_polyline = $1, est_distance_km = $2, est_duration_min = $3, updated_at = NOW()
+       WHERE mission_id = $4`,
+      [routeInfo.polyline, routeInfo.total_km, routeInfo.est_duration_min, newMission.mission_id],
+    );
   }
+
 
   return res.status(201).json({
     success: true,
@@ -573,10 +611,21 @@ const getActiveMissions = asyncHandler(async (req, res) => {
 // ============================================================================
 // A5. PATCH /api/volunteer/missions/:mission_id/status
 // ============================================================================
+// Maps friendly client-facing names → DB enum values
+const STATUS_ALIASES = {
+  EN_ROUTE:   'in_transit',
+  PICKED_UP:  'picked_up',
+  DELIVERED:  'delivered',
+  // lowercase passthrough
+  in_transit: 'in_transit',
+  picked_up:  'picked_up',
+  delivered:  'delivered',
+};
+
 const VALID_TRANSITIONS = {
-  assigned: 'in_transit',
+  assigned:   'in_transit',
   in_transit: 'picked_up',
-  picked_up: 'delivered',
+  picked_up:  'delivered',
 };
 
 const updateMissionStatus = asyncHandler(async (req, res) => {
@@ -598,6 +647,16 @@ const updateMissionStatus = asyncHandler(async (req, res) => {
       success: false,
       data: {},
       message: 'status is required',
+    });
+  }
+
+  // Normalize: accept EN_ROUTE / PICKED_UP / DELIVERED or lowercase db values
+  const normalizedStatus = STATUS_ALIASES[newStatus];
+  if (!normalizedStatus) {
+    return res.status(400).json({
+      success: false,
+      data: {},
+      message: `Invalid status value "${newStatus}". Accepted: EN_ROUTE, PICKED_UP, DELIVERED`,
     });
   }
 
@@ -632,7 +691,7 @@ const updateMissionStatus = asyncHandler(async (req, res) => {
 
   // Validate transition
   const allowedNext = VALID_TRANSITIONS[mission.status];
-  if (newStatus !== allowedNext) {
+  if (normalizedStatus !== allowedNext) {
     return res.status(400).json({
       success: false,
       data: {},
@@ -645,7 +704,7 @@ const updateMissionStatus = asyncHandler(async (req, res) => {
   try {
     await client.query('BEGIN');
 
-    if (newStatus === 'in_transit') {
+    if (normalizedStatus === 'in_transit') {
       await client.query(
         `UPDATE delivery_missions SET status = 'in_transit', updated_at = NOW()
          WHERE mission_id = $1`,
@@ -653,7 +712,7 @@ const updateMissionStatus = asyncHandler(async (req, res) => {
       );
     }
 
-    if (newStatus === 'picked_up') {
+    if (normalizedStatus === 'picked_up') {
       await client.query(
         `UPDATE delivery_missions
          SET status = 'picked_up', pickup_time = NOW(), updated_at = NOW()
@@ -667,7 +726,7 @@ const updateMissionStatus = asyncHandler(async (req, res) => {
       );
     }
 
-    if (newStatus === 'delivered') {
+    if (normalizedStatus === 'delivered') {
       await client.query(
         `UPDATE delivery_missions
          SET status = 'delivered', delivery_time = NOW(),
