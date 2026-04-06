@@ -183,10 +183,12 @@ const getMyListings = asyncHandler(async (req, res) => {
     `SELECT
        fl.*,
        a.street_address, a.city, a.state, a.postal_code, a.country, a.latitude, a.longitude,
-       fc.name AS category_name
+       fc.name AS category_name,
+       li.image_url AS primary_image_url
      FROM food_listings fl
      JOIN addresses a ON fl.address_id = a.address_id
      LEFT JOIN food_categories fc ON fl.category_id = fc.category_id
+     LEFT JOIN listing_images li ON fl.listing_id = li.listing_id AND li.is_primary = true
      WHERE fl.donor_id = $1
      ORDER BY fl.created_at DESC`,
     [donorId]
@@ -281,17 +283,17 @@ const updateListing = asyncHandler(async (req, res) => {
 
   const result = await pool.query(
     `UPDATE food_listings SET
-       title            = COALESCE($1, title),
-       description      = COALESCE($2, description),
-       quantity         = COALESCE($3, quantity),
-       quantity_unit    = COALESCE($4, quantity_unit),
+       title              = COALESCE($1, title),
+       description        = COALESCE($2, description),
+       quantity           = COALESCE($3, quantity),
+       quantity_unit      = COALESCE($4, quantity_unit),
        estimated_servings = COALESCE($5, estimated_servings),
-       expiry_time      = COALESCE($6, expiry_time),
-       pickup_start     = COALESCE($7, pickup_start),
-       pickup_end       = COALESCE($8, pickup_end),
-       category_id      = COALESCE($9, category_id),
-       status           = COALESCE($10, status),
-       updated_at       = NOW()
+       expiry_time        = COALESCE($6, expiry_time),
+       pickup_start       = COALESCE($7, pickup_start),
+       pickup_end         = COALESCE($8, pickup_end),
+       category_id        = COALESCE($9, category_id),
+       status             = COALESCE($10, status),
+       updated_at         = NOW()
      WHERE listing_id = $11
      RETURNING *`,
     [

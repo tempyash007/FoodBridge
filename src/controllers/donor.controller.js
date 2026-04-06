@@ -34,11 +34,20 @@ const getDashboard = asyncHandler(async (req, res) => {
   // 2. Active listings with dietary tags
   const listingsResult = await pool.query(
     `SELECT
-       fl.listing_id, fl.title, fl.estimated_servings,
-       fl.quantity, fl.quantity_unit, fl.expiry_time, fl.status
-     FROM food_listings fl
-     WHERE fl.donor_id = $1 AND fl.status = 'available'
-     ORDER BY fl.created_at DESC`,
+     fl.listing_id,
+     fl.title,
+     fl.estimated_servings,
+     fl.quantity,
+     fl.quantity_unit,
+     fl.expiry_time,
+     fl.status,
+     li.image_url AS primary_image_url
+   FROM food_listings fl
+   LEFT JOIN listing_images li
+     ON fl.listing_id = li.listing_id
+     AND li.is_primary = true
+   WHERE fl.donor_id = $1 AND fl.status = 'available'
+   ORDER BY fl.created_at DESC`,
     [donorId]
   );
 

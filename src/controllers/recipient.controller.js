@@ -12,44 +12,41 @@ const browseListings = asyncHandler(async (req, res) => {
     radius_km = 5,
     category_id,
     dietary_tags,
-    sort = 'nearest',
+    sort = 'expiring_soon',
     search,
     page = 1,
     limit = 10,
   } = req.query;
 
-  // lat & lng are required for distance calculation
-  if (!lat || !lng) {
-    return res.status(400).json({
-      success: false,
-      data: {},
-      message: 'lat and lng query parameters are required',
-    });
-  }
-
-  const latNum = parseFloat(lat);
-  const lngNum = parseFloat(lng);
+  // lat & lng are both optional — distance features are skipped when absent
+  const hasLocation = lat != null && lng != null && lat !== '' && lng !== '';
+  const latNum = hasLocation ? parseFloat(lat) : null;
+  const lngNum = hasLocation ? parseFloat(lng) : null;
   const radiusNum = parseFloat(radius_km);
   const pageNum = Math.max(1, parseInt(page, 10) || 1);
   const limitNum = Math.max(1, Math.min(100, parseInt(limit, 10) || 10));
   const offset = (pageNum - 1) * limitNum;
 
   // ---- Build dynamic WHERE conditions ----
-  const params = [latNum, lngNum]; // $1 = lat, $2 = lng
+  const params = hasLocation ? [latNum, lngNum] : [];
   const conditions = [
     `fl.status = 'available'`,
     `fl.expiry_time > NOW()`,
   ];
 
-  // Haversine distance expression (reused in SELECT, WHERE, ORDER BY)
-  const haversine = `(6371 * acos(
-    cos(radians($1)) * cos(radians(a.latitude)) *
-    cos(radians(a.longitude) - radians($2)) +
-    sin(radians($1)) * sin(radians(a.latitude))
-  ))`;
+  // Haversine distance expression — only built when lat/lng are provided
+  const haversine = hasLocation
+    ? `(6371 * acos(
+        LEAST(1.0, cos(radians($1)) * cos(radians(a.latitude)) *
+        cos(radians(a.longitude) - radians($2)) +
+        sin(radians($1)) * sin(radians(a.latitude)))
+      ))`
+    : null;
 
-  // Radius filter
-  conditions.push(`${haversine} <= $${params.push(radiusNum)}`); // $3
+  // Radius filter — only applied when location is present
+  if (hasLocation) {
+    conditions.push(`${haversine} <= $${params.push(radiusNum)}`);
+  }
 
   // Category filter
   if (category_id) {
@@ -83,17 +80,18 @@ const browseListings = asyncHandler(async (req, res) => {
   const whereClause = `WHERE ${conditions.join(' AND ')}`;
 
   // ---- Sort mode ----
+  const effectiveSort = (sort === 'nearest' && !hasLocation) ? 'expiring_soon' : sort;
   let orderClause;
-  switch (sort) {
-    case 'expiring_soon':
-      orderClause = `ORDER BY fl.expiry_time ASC`;
-      break;
+  switch (effectiveSort) {
     case 'highest_rated':
       orderClause = `ORDER BY donor_avg_rating DESC NULLS LAST`;
       break;
     case 'nearest':
-    default:
       orderClause = `ORDER BY distance_km ASC`;
+      break;
+    case 'expiring_soon':
+    default:
+      orderClause = `ORDER BY fl.expiry_time ASC`;
       break;
   }
 
@@ -107,10 +105,19 @@ const browseListings = asyncHandler(async (req, res) => {
       fl.quantity_unit,
       fl.estimated_servings,
       fl.expiry_time,
+      fl.pickup_start AS pickup_window_start,
+      fl.pickup_end   AS pickup_window_end,
       EXTRACT(EPOCH FROM (fl.expiry_time - NOW())) / 60 AS minutes_until_expiry,
-      ${haversine} AS distance_km,
+      ${hasLocation ? `${haversine} AS distance_km,` : `NULL AS distance_km,`}
       fc.name AS category,
       fl.status,
+      (
+        SELECT li.image_url
+        FROM listing_images li
+        WHERE li.listing_id = fl.listing_id
+          AND li.is_primary = true
+        LIMIT 1
+      ) AS primary_image_url,
       (
         SELECT COALESCE(
           json_agg(dt.name ORDER BY dt.name),
@@ -137,7 +144,7 @@ const browseListings = asyncHandler(async (req, res) => {
   const result = await pool.query(query, params);
 
   // ---- Count query (same filters, no LIMIT/OFFSET) ----
-  const countParams = params.slice(0, params.length - 2); // strip LIMIT & OFFSET
+  const countParams = params.slice(0, params.length - 2);
   const countQuery = `
     SELECT COUNT(*) FROM food_listings fl
     JOIN addresses a ON fl.address_id = a.address_id
@@ -148,7 +155,6 @@ const browseListings = asyncHandler(async (req, res) => {
   const countResult = await pool.query(countQuery, countParams);
   const total = parseInt(countResult.rows[0].count, 10);
 
-  // Shape response — round distance & minutes
   const listings = result.rows.map((row) => ({
     listing_id: row.listing_id,
     title: row.title,
@@ -157,18 +163,21 @@ const browseListings = asyncHandler(async (req, res) => {
     quantity_unit: row.quantity_unit,
     estimated_servings: Number(row.estimated_servings),
     expiry_time: row.expiry_time,
+    pickup_window_start: row.pickup_window_start || null,
+    pickup_window_end: row.pickup_window_end || null,
     minutes_until_expiry: Math.round(Number(row.minutes_until_expiry)),
-    distance_km: parseFloat(Number(row.distance_km).toFixed(1)),
+    distance_km: row.distance_km != null ? parseFloat(Number(row.distance_km).toFixed(1)) : null,
     category: row.category,
     dietary_tags: row.dietary_tags || [],
     status: row.status,
+    primary_image_url: row.primary_image_url || null,
   }));
 
   return res.status(200).json({
     success: true,
     data: {
       total,
-      radius_km: radiusNum,
+      ...(hasLocation && { radius_km: radiusNum }),
       listings,
     },
     message: 'Listings fetched successfully',
@@ -267,21 +276,26 @@ const createClaim = asyncHandler(async (req, res) => {
 const getMyClaims = asyncHandler(async (req, res) => {
   const recipientId = req.user.userId;
 
+  // AFTER
   const result = await pool.query(
     `SELECT
        c.claim_id,
+       fl.listing_id,
        fl.title AS listing_title,
        o.org_name AS donor_org,
        fl.quantity,
        fl.quantity_unit,
        c.status AS claim_status,
        c.pickup_time,
+       dm.mission_id,
        dm.status AS mission_status,
        dm.est_duration_min,
+       li.image_url AS primary_image_url,
        u.first_name || ' ' || LEFT(u.last_name, 1) || '.' AS volunteer_name
      FROM claims c
      JOIN food_listings fl ON c.listing_id = fl.listing_id
      LEFT JOIN organizations o ON fl.donor_id = o.user_id
+     LEFT JOIN listing_images li ON fl.listing_id = li.listing_id AND li.is_primary = true
      LEFT JOIN delivery_missions dm ON c.claim_id = dm.claim_id
      LEFT JOIN volunteer_profiles vp ON dm.volunteer_id = vp.volunteer_id
      LEFT JOIN users u ON vp.user_id = u.user_id
