@@ -30,4 +30,19 @@ const authenticateToken = (req, res, next) => {
     }
 };
 
-module.exports = { authenticateToken };
+/**
+ * Role-guard middleware factory.
+ * Usage: requireRole('admin')  or  requireRole('admin', 'donor')
+ */
+const requireRole = (...allowedRoles) => (req, res, next) => {
+    if (!allowedRoles.includes(req.user.role)) {
+        return res.status(403).json({
+            success: false,
+            data: {},
+            message: 'Access denied — insufficient permissions',
+        });
+    }
+    next();
+};
+
+module.exports = { authenticateToken, requireRole };
