@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const { authenticateToken } = require('../middleware/auth.middleware');
+const createCacheMiddleware = require('../middleware/cache.middleware');
 const {
   browseListings,
   createClaim,
@@ -28,7 +29,7 @@ const requireRecipient = (req, res, next) => {
 router.use(authenticateToken, requireRecipient);
 
 // Browse available listings
-router.get('/browse', browseListings);
+router.get('/browse', createCacheMiddleware(120), browseListings);
 
 // Claims — create & list
 router.post('/claims', createClaim);

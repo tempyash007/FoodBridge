@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { body, query, validationResult } = require('express-validator');
 const { authenticateToken } = require('../middleware/auth.middleware');
+const createCacheMiddleware = require('../middleware/cache.middleware');
 const {
   createListing,
   getListings,
@@ -74,7 +75,7 @@ const createValidation = [
 router.get('/my', authenticateToken, requireDonor, getMyListings);
 
 // GET /api/listings  — any logged-in
-router.get('/', authenticateToken, getListings);
+router.get('/', authenticateToken, createCacheMiddleware(120), getListings);
 
 // GET /api/listings/:id  — any logged-in
 router.get('/:id', authenticateToken, getListingById);

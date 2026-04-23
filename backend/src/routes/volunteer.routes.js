@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const { authenticateToken } = require('../middleware/auth.middleware');
+const createCacheMiddleware = require('../middleware/cache.middleware');
 const {
   getDashboard,
   getAvailableMissions,
@@ -51,7 +52,7 @@ router.get('/schedule', getSchedule);
 router.put('/schedule', updateSchedule);
 
 // A7  — Leaderboard
-router.get('/leaderboard', getLeaderboard);
+router.get('/leaderboard', createCacheMiddleware(300), getLeaderboard);
 
 // B2  — Update volunteer location
 router.patch('/location', updateLocation);

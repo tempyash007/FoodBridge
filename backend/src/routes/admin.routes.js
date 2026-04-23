@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const { authenticateToken, requireRole } = require('../middleware/auth.middleware');
+const createCacheMiddleware = require('../middleware/cache.middleware');
 const {
   getOverview,
   getAnalytics,
@@ -25,10 +26,10 @@ const router = Router();
 router.use(authenticateToken, requireRole('admin'));
 
 // 1. System Overview
-router.get('/overview', getOverview);
+router.get('/overview', createCacheMiddleware(60), getOverview);
 
 // 2. Platform Analytics
-router.get('/analytics', getAnalytics);
+router.get('/analytics', createCacheMiddleware(300), getAnalytics);
 router.get('/analytics/export', exportAnalytics);
 
 // 3. User Verification
@@ -44,7 +45,7 @@ router.get('/users', getUsers);
 router.patch('/users/:user_id', updateUser);
 
 // 6. Food Categories
-router.get('/categories', getCategories);
+router.get('/categories', createCacheMiddleware(600), getCategories);
 router.post('/categories', createCategory);
 router.patch('/categories/:category_id', updateCategory);
 

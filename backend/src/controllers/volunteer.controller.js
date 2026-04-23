@@ -74,13 +74,14 @@ const getDashboard = asyncHandler(async (req, res) => {
        dm.status,
        fl.title        AS listing_title,
        fl.expiry_time,
+       fl.quantity,
+       fl.quantity_unit,
        -- Pickup (donor)
        o_donor.org_name  AS donor_org,
        a_pickup.street_address AS pickup_address,
        a_pickup.latitude       AS pickup_lat,
        a_pickup.longitude      AS pickup_lng,
        -- Delivery (recipient)
-       o_recip.org_name  AS recipient_org,
        a_deliv.street_address AS delivery_address,
        a_deliv.latitude       AS delivery_lat,
        a_deliv.longitude      AS delivery_lng,
@@ -91,11 +92,9 @@ const getDashboard = asyncHandler(async (req, res) => {
      JOIN food_listings fl   ON c.listing_id  = fl.listing_id
      JOIN addresses a_pickup ON fl.address_id = a_pickup.address_id
      LEFT JOIN organizations o_donor ON fl.donor_id = o_donor.user_id
-     LEFT JOIN users u_recip         ON c.recipient_id = u_recip.user_id
-     LEFT JOIN organizations o_recip ON c.recipient_id = o_recip.user_id
-     LEFT JOIN addresses a_deliv     ON o_recip.address_id = a_deliv.address_id
+     LEFT JOIN addresses a_deliv     ON c.delivery_address_id = a_deliv.address_id
      WHERE dm.volunteer_id = $1
-       AND dm.status IN ('assigned', 'in_transit')
+       AND dm.status IN ('assigned', 'in_transit', 'picked_up')
      ORDER BY dm.created_at ASC`,
     [volunteerId],
   );
@@ -117,7 +116,7 @@ const getDashboard = asyncHandler(async (req, res) => {
         waypoints.push({
           lat: parseFloat(m.delivery_lat),
           lng: parseFloat(m.delivery_lng),
-          name: m.recipient_org || 'Delivery',
+          name: 'Delivery',
           type: 'DELIVER',
           address: m.delivery_address,
         });
@@ -163,9 +162,11 @@ const getDashboard = asyncHandler(async (req, res) => {
       org_name: m.donor_org,
       address: m.pickup_address,
       listing_title: m.listing_title,
+      quantity: m.quantity ? Number(m.quantity) : null,
+      quantity_unit: m.quantity_unit,
     },
     delivery: {
-      org_name: m.recipient_org,
+      org_name: null,
       address: m.delivery_address,
     },
     distance_km: m.est_distance_km ? parseFloat(m.est_distance_km) : null,
@@ -227,10 +228,12 @@ const getAvailableMissions = asyncHandler(async (req, res) => {
        a.street_address  AS pickup_address
      FROM claims c
      JOIN food_listings fl   ON c.listing_id  = fl.listing_id
-     JOIN addresses a        ON fl.address_id = a.address_id
+     LEFT JOIN addresses a        ON fl.address_id = a.address_id
      LEFT JOIN organizations o_donor ON fl.donor_id     = o_donor.user_id
      LEFT JOIN organizations o_recip ON c.recipient_id  = o_recip.user_id
      WHERE c.status = 'approved'
+     AND fl.status = 'reserved'
+       AND fl.expiry_time > NOW()
        AND NOT EXISTS (
          SELECT 1 FROM delivery_missions dm WHERE dm.claim_id = c.claim_id
        )
@@ -284,6 +287,10 @@ const getAvailableMissions = asyncHandler(async (req, res) => {
     if (b.distance_km === null) return -1;
     return a.distance_km - b.distance_km;
   });
+
+  console.log('Available missions query returned:', result.rows.length, 'rows');
+  console.log('Missions built:', missions.length);
+
 
   return res.status(200).json({
     success: true,
@@ -379,9 +386,10 @@ const acceptMission = asyncHandler(async (req, res) => {
      JOIN addresses a_pickup          ON a_pickup.address_id     = fl.address_id
      LEFT JOIN organizations donor_org    ON donor_org.user_id   = fl.donor_id
      LEFT JOIN organizations recipient_org ON recipient_org.user_id = $2
-     LEFT JOIN addresses a_deliv          ON a_deliv.address_id  = recipient_org.address_id
+     LEFT JOIN claims c2                   ON c2.claim_id = $3
+     LEFT JOIN addresses a_deliv           ON a_deliv.address_id = c2.delivery_address_id
      WHERE fl.listing_id = $1`,
-    [claim.listing_id, claim.recipient_id],
+    [claim.listing_id, claim.recipient_id, claim_id],
   );
 
   const addr = addressResult.rows[0] || {};
@@ -442,8 +450,7 @@ const acceptMission = asyncHandler(async (req, res) => {
          JOIN food_listings fl   ON c.listing_id  = fl.listing_id
          JOIN addresses a_pickup ON fl.address_id = a_pickup.address_id
          LEFT JOIN organizations o_donor ON fl.donor_id    = o_donor.user_id
-         LEFT JOIN organizations o_recip ON c.recipient_id = o_recip.user_id
-         LEFT JOIN addresses a_deliv     ON o_recip.address_id = a_deliv.address_id
+         LEFT JOIN addresses a_deliv     ON c.delivery_address_id = a_deliv.address_id
          WHERE dm.volunteer_id = $1
            AND dm.status IN ('assigned', 'in_transit')
          ORDER BY dm.created_at ASC`,
@@ -565,15 +572,13 @@ const getActiveMissions = asyncHandler(async (req, res) => {
        fl.expiry_time,
        o_donor.org_name  AS donor_org,
        a_pickup.street_address AS pickup_address,
-       o_recip.org_name  AS recipient_org,
        a_deliv.street_address  AS delivery_address
      FROM delivery_missions dm
      JOIN claims c           ON dm.claim_id   = c.claim_id
      JOIN food_listings fl   ON c.listing_id  = fl.listing_id
      JOIN addresses a_pickup ON fl.address_id = a_pickup.address_id
      LEFT JOIN organizations o_donor ON fl.donor_id    = o_donor.user_id
-     LEFT JOIN organizations o_recip ON c.recipient_id = o_recip.user_id
-     LEFT JOIN addresses a_deliv     ON o_recip.address_id = a_deliv.address_id
+     LEFT JOIN addresses a_deliv     ON c.delivery_address_id = a_deliv.address_id
      WHERE dm.volunteer_id = $1
        AND dm.status IN ('assigned', 'in_transit', 'picked_up')
      ORDER BY dm.created_at ASC`,
@@ -594,7 +599,7 @@ const getActiveMissions = asyncHandler(async (req, res) => {
       quantity_unit: m.quantity_unit,
     },
     delivery: {
-      org_name: m.recipient_org,
+      org_name: null,
       address: m.delivery_address,
     },
     distance_km: m.est_distance_km ? parseFloat(m.est_distance_km) : null,
@@ -613,19 +618,19 @@ const getActiveMissions = asyncHandler(async (req, res) => {
 // ============================================================================
 // Maps friendly client-facing names → DB enum values
 const STATUS_ALIASES = {
-  EN_ROUTE:   'in_transit',
-  PICKED_UP:  'picked_up',
-  DELIVERED:  'delivered',
+  EN_ROUTE: 'in_transit',
+  PICKED_UP: 'picked_up',
+  DELIVERED: 'delivered',
   // lowercase passthrough
   in_transit: 'in_transit',
-  picked_up:  'picked_up',
-  delivered:  'delivered',
+  picked_up: 'picked_up',
+  delivered: 'delivered',
 };
 
 const VALID_TRANSITIONS = {
-  assigned:   'in_transit',
+  assigned: 'in_transit',
   in_transit: 'picked_up',
-  picked_up:  'delivered',
+  picked_up: 'delivered',
 };
 
 const updateMissionStatus = asyncHandler(async (req, res) => {
@@ -750,21 +755,36 @@ const updateMissionStatus = asyncHandler(async (req, res) => {
          WHERE volunteer_id = $1`,
         [volunteerId],
       );
+      // Fetch listing details for impact calculation
+      const listingDetails = await client.query(
+        `SELECT estimated_servings, quantity FROM food_listings WHERE listing_id = $1`,
+        [mission.listing_id],
+      );
+      const servings = listingDetails.rows[0]?.estimated_servings || 0;
+      const quantity = listingDetails.rows[0]?.quantity || 0;
+      const co2Saved = parseFloat((quantity * 2.5).toFixed(2)); // ~2.5kg CO2 per kg food
+
       // Update impact_metrics for volunteer
       await client.query(
-        `INSERT INTO impact_metrics (user_id, meals_saved, total_deliveries)
-         VALUES ($1, 0, 1)
+        `INSERT INTO impact_metrics (user_id, meals_saved, total_deliveries, co2_prevented_kg, waste_diverted_kg)
+         VALUES ($1, $2, 1, $3, $4)
          ON CONFLICT (user_id) DO UPDATE
-         SET total_deliveries = impact_metrics.total_deliveries + 1`,
-        [userId],
+         SET total_deliveries = impact_metrics.total_deliveries + 1,
+             meals_saved = impact_metrics.meals_saved + $2,
+             co2_prevented_kg = impact_metrics.co2_prevented_kg + $3,
+             waste_diverted_kg = impact_metrics.waste_diverted_kg + $4`,
+        [userId, servings, co2Saved, quantity],
       );
       // Update impact_metrics for donor
       await client.query(
-        `INSERT INTO impact_metrics (user_id, meals_saved, total_deliveries)
-         VALUES ($1, 0, 1)
+        `INSERT INTO impact_metrics (user_id, meals_saved, total_deliveries, co2_prevented_kg, waste_diverted_kg)
+         VALUES ($1, $2, 1, $3, $4)
          ON CONFLICT (user_id) DO UPDATE
-         SET total_deliveries = impact_metrics.total_deliveries + 1`,
-        [mission.donor_id],
+         SET total_deliveries = impact_metrics.total_deliveries + 1,
+             meals_saved = impact_metrics.meals_saved + $2,
+             co2_prevented_kg = impact_metrics.co2_prevented_kg + $3,
+             waste_diverted_kg = impact_metrics.waste_diverted_kg + $4`,
+        [mission.donor_id, servings, co2Saved, quantity],
       );
     }
 

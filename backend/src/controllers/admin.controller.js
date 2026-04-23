@@ -1,5 +1,6 @@
 const pool = require('../config/db');
 const asyncHandler = require('../utils/asyncHandler');
+const invalidateCache = require('../utils/invalidateCache');
 
 // ============================================================================
 // 1. GET /api/admin/overview — System Overview
@@ -681,6 +682,9 @@ const createCategory = asyncHandler(async (req, res) => {
     [name.trim(), description || null, icon_url || null],
   );
 
+  // Invalidate categories cache
+  await invalidateCache('GET /api/admin/categories*');
+
   return res.status(201).json({
     success: true,
     data: { category: result.rows[0] },
@@ -744,6 +748,9 @@ const updateCategory = asyncHandler(async (req, res) => {
     `UPDATE food_categories SET ${updates.join(', ')} WHERE category_id = $${idx} RETURNING *`,
     params,
   );
+
+  // Invalidate categories cache
+  await invalidateCache('GET /api/admin/categories*');
 
   return res.status(200).json({
     success: true,

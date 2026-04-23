@@ -190,13 +190,21 @@ const browseListings = asyncHandler(async (req, res) => {
 // ============================================================================
 const createClaim = asyncHandler(async (req, res) => {
   const recipientId = req.user.userId;
-  const { listing_id, pickup_time } = req.body;
+  const { listing_id, pickup_time, street_address, city, state, postal_code, country, latitude, longitude } = req.body;
 
   if (!listing_id || !pickup_time) {
     return res.status(400).json({
       success: false,
       data: {},
       message: 'listing_id and pickup_time are required',
+    });
+  }
+
+  if (!street_address || !city || !state || !postal_code) {
+    return res.status(400).json({
+      success: false,
+      data: {},
+      message: 'Delivery address fields are required: street_address, city, state, postal_code',
     });
   }
 
@@ -242,11 +250,19 @@ const createClaim = asyncHandler(async (req, res) => {
   try {
     await client.query('BEGIN');
 
+    // Insert delivery address
+    const addrResult = await client.query(
+      `INSERT INTO addresses (street_address, city, state, postal_code, country, latitude, longitude)
+       VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING address_id`,
+      [street_address, city, state, postal_code, country || 'India', latitude, longitude]
+    );
+    const deliveryAddressId = addrResult.rows[0].address_id;
+
     const claimResult = await client.query(
-      `INSERT INTO claims (listing_id, recipient_id, pickup_time, status)
-       VALUES ($1, $2, $3, 'pending')
+      `INSERT INTO claims (listing_id, recipient_id, pickup_time, status, delivery_address_id)
+       VALUES ($1, $2, $3, 'approved', $4)
        RETURNING *`,
-      [listing_id, recipientId, pickup_time]
+      [listing_id, recipientId, pickup_time, deliveryAddressId]
     );
 
     await client.query(
@@ -289,6 +305,11 @@ const getMyClaims = asyncHandler(async (req, res) => {
        c.pickup_time,
        dm.mission_id,
        dm.status AS mission_status,
+       EXISTS (
+      SELECT 1 FROM reviews r
+      WHERE r.mission_id = dm.mission_id
+            AND r.reviewer_id = c.recipient_id
+      ) AS has_reviewed,
        dm.est_duration_min,
        li.image_url AS primary_image_url,
        u.first_name || ' ' || LEFT(u.last_name, 1) || '.' AS volunteer_name
@@ -304,9 +325,14 @@ const getMyClaims = asyncHandler(async (req, res) => {
     [recipientId]
   );
 
+  const claims = result.rows.map(row => ({
+    ...row,
+    has_reviewed: row.has_reviewed === true || row.has_reviewed === 't',
+  }))
+
   return res.status(200).json({
     success: true,
-    data: { claims: result.rows },
+    data: { claims },
     message: 'Claims fetched successfully',
   });
 });
@@ -336,12 +362,12 @@ const cancelClaim = asyncHandler(async (req, res) => {
 
   const claim = claimResult.rows[0];
 
-  // 2. Only allow cancellation of PENDING claims
-  if (claim.status !== 'pending') {
+  // 2. Only allow cancellation of claims that haven't been picked up yet
+  if (!['pending', 'approved'].includes(claim.status)) {
     return res.status(400).json({
       success: false,
       data: {},
-      message: 'Only pending claims can be cancelled',
+      message: 'Only pending or approved claims can be cancelled',
     });
   }
 
@@ -443,6 +469,18 @@ const submitReview = asyncHandler(async (req, res) => {
      VALUES ($1, $2, $3, $4, $5)
      RETURNING *`,
     [reviewerId, volunteer_user_id, mission_id, rating, comment || null]
+  );
+
+  await pool.query(
+    `UPDATE volunteer_profiles
+     SET avg_rating = (
+       SELECT ROUND(AVG(r.rating)::numeric, 2)
+       FROM reviews r
+       JOIN delivery_missions dm ON dm.mission_id = r.mission_id
+       WHERE dm.volunteer_id = volunteer_profiles.volunteer_id
+     )
+     WHERE user_id = $1`,
+    [volunteer_user_id]
   );
 
   return res.status(201).json({

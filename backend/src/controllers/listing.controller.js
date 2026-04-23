@@ -1,5 +1,6 @@
 const pool = require('../config/db');
 const asyncHandler = require('../utils/asyncHandler');
+const invalidateCache = require('../utils/invalidateCache');
 
 // ---------------------------------------------------------------------------
 // Helper — auto-expire ACTIVE listings whose expiry_time has passed
@@ -91,6 +92,10 @@ const createListing = asyncHandler(async (req, res) => {
     }
 
     await client.query('COMMIT');
+
+    // Invalidate listing caches
+    await invalidateCache('GET /api/listings*');
+    await invalidateCache('GET /api/recipient/browse*');
 
     return res.status(201).json({
       success: true,
@@ -307,6 +312,10 @@ const updateListing = asyncHandler(async (req, res) => {
     ]
   );
 
+  // Invalidate listing caches
+  await invalidateCache('GET /api/listings*');
+  await invalidateCache('GET /api/recipient/browse*');
+
   return res.status(200).json({
     success: true,
     data: { listing: result.rows[0] },
@@ -340,6 +349,10 @@ const deleteListing = asyncHandler(async (req, res) => {
      RETURNING *`,
     [id]
   );
+
+  // Invalidate listing caches
+  await invalidateCache('GET /api/listings*');
+  await invalidateCache('GET /api/recipient/browse*');
 
   return res.status(200).json({
     success: true,
