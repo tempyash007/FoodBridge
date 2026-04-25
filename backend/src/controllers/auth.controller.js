@@ -1,8 +1,10 @@
+const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const pool = require('../config/db');
 const asyncHandler = require('../utils/asyncHandler');
 const { generateTokens, generateAccessToken } = require('../utils/generateTokens');
+const { sendPasswordResetEmail } = require('../services/email.service');
 
 // Cookie options
 const ACCESS_COOKIE_OPTIONS = {
@@ -245,4 +247,220 @@ const me = asyncHandler(async (req, res) => {
     });
 });
 
-module.exports = { register, login, logout, refresh, me };
+// ---------------------------------------------------------------------------
+// Password Reset Endpoints
+// ---------------------------------------------------------------------------
+
+/**
+ * Helper — generates a reset token, hashes it, stores it in DB, and sends the email.
+ * Shared by forgotPassword and resendReset.
+ *
+ * @param {object} user — { user_id, email, first_name }
+ * @returns {{ rawToken: string }}
+ */
+const _createAndSendResetToken = async (user) => {
+    // Generate a cryptographically secure raw token
+    const rawToken = crypto.randomBytes(32).toString('hex');
+
+    // Hash the token before storing (salt = 10)
+    const tokenHash = await bcrypt.hash(rawToken, 10);
+
+    // Store hashed token with 15-minute expiry
+    await pool.query(
+        `INSERT INTO password_reset_tokens (user_id, email, token_hash, expires_at)
+         VALUES ($1, $2, $3, NOW() + INTERVAL '15 minutes')`,
+        [user.user_id, user.email, tokenHash]
+    );
+
+    // Build reset link
+    const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${rawToken}&email=${encodeURIComponent(user.email)}`;
+
+    // Send email (throws on failure — caller handles it)
+    await sendPasswordResetEmail(user.email, resetLink, user.first_name);
+
+    return { rawToken };
+};
+
+/**
+ * POST /api/auth/forgot-password
+ * Public — sends a password-reset email if the user exists.
+ * Never reveals whether the email is registered.
+ */
+const forgotPassword = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+
+    // Generic success message — returned regardless of email existence
+    const genericMessage = 'If this email exists, a reset link has been sent';
+
+    // Look up user
+    const result = await pool.query(
+        'SELECT user_id, email, first_name FROM users WHERE email = $1 AND is_active = true',
+        [email]
+    );
+
+    if (result.rows.length === 0) {
+        // Don't reveal that the email doesn't exist
+        return res.status(200).json({
+            success: true,
+            data: {},
+            message: genericMessage,
+        });
+    }
+
+    const user = result.rows[0];
+
+    try {
+        await _createAndSendResetToken(user);
+    } catch (err) {
+        console.error('❌ forgotPassword email error:', err.message);
+        return res.status(500).json({
+            success: false,
+            data: {},
+            message: 'Failed to send reset email. Please try again later.',
+        });
+    }
+
+    return res.status(200).json({
+        success: true,
+        data: {},
+        message: genericMessage,
+    });
+});
+
+/**
+ * POST /api/auth/reset-password
+ * Public — resets the user's password using a valid token.
+ */
+const resetPassword = asyncHandler(async (req, res) => {
+    const { email, token, new_password } = req.body;
+
+    // Find a valid (unused, non-expired) token for this email
+    const tokenResult = await pool.query(
+        `SELECT token_id, token_hash
+         FROM password_reset_tokens
+         WHERE email = $1 AND expires_at > NOW() AND used = false
+         ORDER BY created_at DESC`,
+        [email]
+    );
+
+    if (tokenResult.rows.length === 0) {
+        return res.status(400).json({
+            success: false,
+            data: {},
+            message: 'Invalid or expired reset token',
+        });
+    }
+
+    // Try matching the raw token against each stored hash (there may be multiple unused)
+    let matchedTokenId = null;
+    for (const row of tokenResult.rows) {
+        const isMatch = await bcrypt.compare(token, row.token_hash);
+        if (isMatch) {
+            matchedTokenId = row.token_id;
+            break;
+        }
+    }
+
+    if (!matchedTokenId) {
+        return res.status(400).json({
+            success: false,
+            data: {},
+            message: 'Invalid or expired reset token',
+        });
+    }
+
+    // Hash the new password
+    const newPasswordHash = await bcrypt.hash(new_password, 10);
+
+    // Update the user's password
+    await pool.query(
+        'UPDATE users SET password_hash = $1, updated_at = NOW() WHERE email = $2',
+        [newPasswordHash, email]
+    );
+
+    // Mark token as used
+    await pool.query(
+        'UPDATE password_reset_tokens SET used = true WHERE token_id = $1',
+        [matchedTokenId]
+    );
+
+    return res.status(200).json({
+        success: true,
+        data: {},
+        message: 'Password reset successfully',
+    });
+});
+
+/**
+ * POST /api/auth/resend-reset
+ * Public — resends a password-reset email with a fresh token.
+ * Rate-limited: rejects if last token was created < 60 seconds ago.
+ */
+const resendReset = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+
+    const genericMessage = 'If this email exists, a reset link has been sent';
+
+    // Look up user
+    const userResult = await pool.query(
+        'SELECT user_id, email, first_name FROM users WHERE email = $1 AND is_active = true',
+        [email]
+    );
+
+    if (userResult.rows.length === 0) {
+        return res.status(200).json({
+            success: true,
+            data: {},
+            message: genericMessage,
+        });
+    }
+
+    const user = userResult.rows[0];
+
+    // Rate limit — check if last token was sent less than 60 seconds ago
+    const recentToken = await pool.query(
+        `SELECT created_at FROM password_reset_tokens
+         WHERE email = $1
+         ORDER BY created_at DESC
+         LIMIT 1`,
+        [email]
+    );
+
+    if (recentToken.rows.length > 0) {
+        const lastCreated = new Date(recentToken.rows[0].created_at);
+        const secondsSince = (Date.now() - lastCreated.getTime()) / 1000;
+
+        if (secondsSince < 60) {
+            return res.status(429).json({
+                success: false,
+                data: {},
+                message: 'Please wait before requesting another reset',
+            });
+        }
+    }
+
+    // Delete existing unused tokens for this email
+    await pool.query(
+        'DELETE FROM password_reset_tokens WHERE email = $1 AND used = false',
+        [email]
+    );
+
+    try {
+        await _createAndSendResetToken(user);
+    } catch (err) {
+        console.error('❌ resendReset email error:', err.message);
+        return res.status(500).json({
+            success: false,
+            data: {},
+            message: 'Failed to send reset email. Please try again later.',
+        });
+    }
+
+    return res.status(200).json({
+        success: true,
+        data: {},
+        message: genericMessage,
+    });
+});
+
+module.exports = { register, login, logout, refresh, me, forgotPassword, resetPassword, resendReset };
