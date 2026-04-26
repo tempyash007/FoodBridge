@@ -1,6 +1,7 @@
 const pool = require('../config/db');
 const asyncHandler = require('../utils/asyncHandler');
 const invalidateCache = require('../utils/invalidateCache');
+const { createNotification, sendNotificationEmail, createBulkNotifications } = require('../services/notification.service');
 
 // ============================================================================
 // 1. GET /api/admin/overview — System Overview
@@ -378,6 +379,36 @@ const updateVerification = asyncHandler(async (req, res) => {
     );
 
     await client.query('COMMIT');
+
+    // ── Fire-and-forget: notify the org owner ──
+    (async () => {
+      try {
+        createNotification({
+          userId: org.user_id,
+          type: 'VERIFICATION',
+          title: action === 'approve'
+            ? 'Your organization is verified!'
+            : 'Verification rejected',
+          message: action === 'approve'
+            ? 'You can now create listings on FoodBridge'
+            : 'Your verification was rejected. Please contact support.',
+        });
+
+        sendNotificationEmail(org.user_id, {
+          subject: action === 'approve'
+            ? 'Your organization is verified!'
+            : 'Verification rejected',
+          title: action === 'approve'
+            ? 'Your organization is verified!'
+            : 'Verification rejected',
+          message: action === 'approve'
+            ? 'Congratulations! Your organization has been verified on FoodBridge. You can now create food listings and start making a difference.'
+            : 'Unfortunately, your organization verification was rejected. Please contact support for more details.',
+        });
+      } catch (err) {
+        console.error('⚠️  Notification hook (verification) failed:', err.message);
+      }
+    })();
 
     return res.status(200).json({
       success: true,

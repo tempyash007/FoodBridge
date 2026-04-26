@@ -1,6 +1,7 @@
 const pool = require('../config/db');
 const asyncHandler = require('../utils/asyncHandler');
 const { getOptimizedRoute, getDistance } = require('../services/maps.service');
+const { createNotification, sendNotificationEmail } = require('../services/notification.service');
 
 // ---------------------------------------------------------------------------
 // Helper — get the volunteer_id (PK in volunteer_profiles) for a user_id
@@ -515,6 +516,26 @@ const acceptMission = asyncHandler(async (req, res) => {
     );
   }
 
+  // ── Fire-and-forget: notify RECIPIENT that a volunteer accepted ──
+  (async () => {
+    try {
+      // Get volunteer first name
+      const volUser = await pool.query(
+        `SELECT first_name FROM users WHERE user_id = $1`,
+        [userId],
+      );
+      const volunteerName = volUser.rows[0]?.first_name || 'A volunteer';
+
+      createNotification({
+        userId: claim.recipient_id,
+        type: 'VOLUNTEER_ASSIGNED',
+        title: 'A volunteer is on the way',
+        message: `${volunteerName} has accepted your food rescue mission`,
+      });
+    } catch (err) {
+      console.error('⚠️  Notification hook (acceptMission) failed:', err.message);
+    }
+  })();
 
   return res.status(201).json({
     success: true,
@@ -789,6 +810,59 @@ const updateMissionStatus = asyncHandler(async (req, res) => {
     }
 
     await client.query('COMMIT');
+
+    // ── Fire-and-forget: notify donor + recipient on DELIVERED ──
+    if (normalizedStatus === 'delivered') {
+      (async () => {
+        try {
+          // Get listing + claim details for notification messages
+          const detailsResult = await pool.query(
+            `SELECT fl.title AS listing_title, fl.donor_id, c.recipient_id,
+                    o_donor.org_name AS donor_org, o_recip.org_name AS recipient_org
+             FROM delivery_missions dm
+             JOIN claims c ON dm.claim_id = c.claim_id
+             JOIN food_listings fl ON c.listing_id = fl.listing_id
+             LEFT JOIN organizations o_donor ON fl.donor_id = o_donor.user_id
+             LEFT JOIN organizations o_recip ON c.recipient_id = o_recip.user_id
+             WHERE dm.mission_id = $1`,
+            [mission_id],
+          );
+          const d = detailsResult.rows[0];
+          if (!d) return;
+
+          // Notify DONOR
+          createNotification({
+            userId: d.donor_id,
+            type: 'FOOD_DELIVERED',
+            title: 'Your food was delivered!',
+            message: `${d.listing_title} was successfully delivered to ${d.recipient_org || 'the recipient'}`,
+          });
+
+          // Notify RECIPIENT
+          createNotification({
+            userId: d.recipient_id,
+            type: 'FOOD_DELIVERED',
+            title: 'Food delivery complete',
+            message: `Your food from ${d.donor_org || 'the donor'} has arrived. Please confirm receipt.`,
+          });
+
+          // Email both — fire and forget
+          sendNotificationEmail(d.donor_id, {
+            subject: 'Your food was delivered!',
+            title: 'Your food was delivered!',
+            message: `${d.listing_title} was successfully delivered to ${d.recipient_org || 'the recipient'}. Thank you for your donation!`,
+          });
+
+          sendNotificationEmail(d.recipient_id, {
+            subject: 'Food delivery complete',
+            title: 'Food delivery complete',
+            message: `Your food from ${d.donor_org || 'the donor'} has arrived. Please log in to confirm receipt and leave a review.`,
+          });
+        } catch (err) {
+          console.error('⚠️  Notification hook (DELIVERED) failed:', err.message);
+        }
+      })();
+    }
 
     return res.status(200).json({
       success: true,

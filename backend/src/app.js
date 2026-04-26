@@ -10,6 +10,7 @@ const recipientRoutes = require('./routes/recipient.routes');
 const volunteerRoutes = require('./routes/volunteer.routes');
 const categoryRoutes = require('./routes/category.routes');
 const adminRoutes = require('./routes/admin.routes');
+const notificationRoutes = require('./routes/notification.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -31,6 +32,7 @@ app.use('/api/recipient', recipientRoutes);
 app.use('/api/volunteer', volunteerRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Health check
 app.get('/', (_req, res) => {

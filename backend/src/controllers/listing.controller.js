@@ -1,6 +1,7 @@
 const pool = require('../config/db');
 const asyncHandler = require('../utils/asyncHandler');
 const invalidateCache = require('../utils/invalidateCache');
+const { createBulkNotifications } = require('../services/notification.service');
 
 // ---------------------------------------------------------------------------
 // Helper — auto-expire ACTIVE listings whose expiry_time has passed
@@ -96,6 +97,34 @@ const createListing = asyncHandler(async (req, res) => {
     // Invalidate listing caches
     await invalidateCache('GET /api/listings*');
     await invalidateCache('GET /api/recipient/browse*');
+
+    // ── Fire-and-forget: notify all recipients about the new listing ──
+    (async () => {
+      try {
+        // Get donor org_name
+        const orgResult = await pool.query(
+          `SELECT org_name FROM organizations WHERE user_id = $1`,
+          [donorId],
+        );
+        const orgName = orgResult.rows[0]?.org_name || 'A donor';
+
+        // Get all active recipients
+        const recipientsResult = await pool.query(
+          `SELECT user_id FROM users WHERE role = 'recipient' AND is_active = true`,
+        );
+        const recipientIds = recipientsResult.rows.map((r) => r.user_id);
+
+        if (recipientIds.length > 0) {
+          createBulkNotifications(recipientIds, {
+            type: 'NEW_LISTING',
+            title: 'New food listing near you',
+            message: `${orgName} just listed ${title} (${quantity} ${quantity_unit})`,
+          });
+        }
+      } catch (err) {
+        console.error('⚠️  Notification hook (createListing) failed:', err.message);
+      }
+    })();
 
     return res.status(201).json({
       success: true,

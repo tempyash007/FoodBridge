@@ -1,5 +1,6 @@
 const pool = require('../config/db');
 const asyncHandler = require('../utils/asyncHandler');
+const { createNotification, sendNotificationEmail } = require('../services/notification.service');
 
 // ============================================================================
 // GET /api/recipient/browse
@@ -272,6 +273,43 @@ const createClaim = asyncHandler(async (req, res) => {
 
     await client.query('COMMIT');
 
+    // ── Fire-and-forget: notify the DONOR about the claim ──
+    (async () => {
+      try {
+        // Get donor_id and listing title
+        const listingInfo = await pool.query(
+          `SELECT fl.donor_id, fl.title AS listing_title
+           FROM food_listings fl WHERE fl.listing_id = $1`,
+          [listing_id],
+        );
+        const { donor_id, listing_title } = listingInfo.rows[0] || {};
+
+        // Get recipient org name
+        const orgResult = await pool.query(
+          `SELECT org_name FROM organizations WHERE user_id = $1`,
+          [recipientId],
+        );
+        const recipientOrg = orgResult.rows[0]?.org_name || 'A recipient';
+
+        if (donor_id) {
+          createNotification({
+            userId: donor_id,
+            type: 'CLAIM_RECEIVED',
+            title: 'Someone claimed your listing',
+            message: `${recipientOrg} claimed ${listing_title}`,
+          });
+
+          sendNotificationEmail(donor_id, {
+            subject: 'Someone claimed your listing',
+            title: 'Someone claimed your listing',
+            message: `${recipientOrg} claimed your listing "${listing_title}". Log in to FoodBridge to see details.`,
+          });
+        }
+      } catch (err) {
+        console.error('⚠️  Notification hook (createClaim) failed:', err.message);
+      }
+    })();
+
     return res.status(201).json({
       success: true,
       data: { claim: claimResult.rows[0] },
@@ -482,6 +520,27 @@ const submitReview = asyncHandler(async (req, res) => {
      WHERE user_id = $1`,
     [volunteer_user_id]
   );
+
+  // ── Fire-and-forget: notify the VOLUNTEER about the review ──
+  (async () => {
+    try {
+      // Get reviewer org name
+      const orgResult = await pool.query(
+        `SELECT org_name FROM organizations WHERE user_id = $1`,
+        [reviewerId],
+      );
+      const reviewerOrg = orgResult.rows[0]?.org_name || 'A user';
+
+      createNotification({
+        userId: volunteer_user_id,
+        type: 'REVIEW_RECEIVED',
+        title: 'You received a new review',
+        message: `${reviewerOrg} gave you ${rating} stars`,
+      });
+    } catch (err) {
+      console.error('⚠️  Notification hook (submitReview) failed:', err.message);
+    }
+  })();
 
   return res.status(201).json({
     success: true,

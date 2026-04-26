@@ -1,0 +1,1155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1777136723049" clover="3.2.0">
+  <project timestamp="1777136723049" name="All files">
+    <metrics statements="1071" coveredstatements="940" conditionals="571" coveredconditionals="390" methods="101" coveredmethods="92" elements="1743" coveredelements="1422" complexity="0" loc="1071" ncloc="1071" packages="5" files="21" classes="21"/>
+    <package name="controllers">
+      <metrics statements="838" coveredstatements="718" conditionals="520" coveredconditionals="350" methods="77" coveredmethods="69"/>
+      <file name="admin.controller.js" path="D:\FoodBridge\backend\src\controllers\admin.controller.js">
+        <metrics statements="202" coveredstatements="187" conditionals="110" coveredconditionals="90" methods="19" coveredmethods="19"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="29" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="30" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="31" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="44" count="1" type="stmt"/>
+        <line num="47" count="1" type="stmt"/>
+        <line num="69" count="1" type="stmt"/>
+        <line num="91" count="1" type="stmt"/>
+        <line num="97" count="1" type="stmt"/>
+        <line num="99" count="1" type="stmt"/>
+        <line num="127" count="2" type="stmt"/>
+        <line num="129" count="1" type="stmt"/>
+        <line num="137" count="1" type="stmt"/>
+        <line num="138" count="1" type="stmt"/>
+        <line num="139" count="1" type="stmt"/>
+        <line num="143" count="1" type="stmt"/>
+        <line num="162" count="1" type="stmt"/>
+        <line num="163" count="1" type="stmt"/>
+        <line num="164" count="1" type="stmt"/>
+        <line num="167" count="1" type="stmt"/>
+        <line num="174" count="1" type="stmt"/>
+        <line num="175" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="180" count="1" type="stmt"/>
+        <line num="185" count="1" type="stmt"/>
+        <line num="186" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="191" count="1" type="stmt"/>
+        <line num="194" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="199" count="1" type="stmt"/>
+        <line num="212" count="1" type="stmt"/>
+        <line num="213" count="1" type="stmt"/>
+        <line num="214" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="215" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="216" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="217" count="1" type="stmt"/>
+        <line num="226" count="1" type="stmt"/>
+        <line num="256" count="2" type="stmt"/>
+        <line num="257" count="1" type="stmt"/>
+        <line num="272" count="1" type="stmt"/>
+        <line num="273" count="1" type="stmt"/>
+        <line num="274" count="1" type="stmt"/>
+        <line num="285" count="1" type="stmt"/>
+        <line num="287" count="1" type="stmt"/>
+        <line num="288" count="1" type="stmt"/>
+        <line num="289" count="1" type="stmt"/>
+        <line num="295" count="2" type="stmt"/>
+        <line num="296" count="1" type="stmt"/>
+        <line num="310" count="1" type="stmt"/>
+        <line num="323" count="2" type="stmt"/>
+        <line num="324" count="4" type="stmt"/>
+        <line num="325" count="4" type="stmt"/>
+        <line num="326" count="4" type="stmt"/>
+        <line num="328" count="4" type="cond" truecount="4" falsecount="0"/>
+        <line num="329" count="1" type="stmt"/>
+        <line num="337" count="3" type="stmt"/>
+        <line num="342" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="343" count="1" type="stmt"/>
+        <line num="350" count="2" type="stmt"/>
+        <line num="352" count="2" type="stmt"/>
+        <line num="353" count="2" type="stmt"/>
+        <line num="354" count="2" type="stmt"/>
+        <line num="356" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="357" count="1" type="stmt"/>
+        <line num="361" count="1" type="stmt"/>
+        <line num="366" count="1" type="stmt"/>
+        <line num="373" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="374" count="2" type="stmt"/>
+        <line num="380" count="2" type="stmt"/>
+        <line num="382" count="2" type="stmt"/>
+        <line num="388" count="0" type="stmt"/>
+        <line num="389" count="0" type="stmt"/>
+        <line num="391" count="2" type="stmt"/>
+        <line num="398" count="2" type="stmt"/>
+        <line num="399" count="1" type="stmt"/>
+        <line num="411" count="1" type="stmt"/>
+        <line num="420" count="1" type="stmt"/>
+        <line num="433" count="2" type="stmt"/>
+        <line num="434" count="4" type="stmt"/>
+        <line num="435" count="4" type="stmt"/>
+        <line num="436" count="4" type="stmt"/>
+        <line num="438" count="4" type="cond" truecount="4" falsecount="0"/>
+        <line num="439" count="1" type="stmt"/>
+        <line num="447" count="3" type="stmt"/>
+        <line num="452" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="453" count="1" type="stmt"/>
+        <line num="460" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="462" count="2" type="stmt"/>
+        <line num="468" count="2" type="stmt"/>
+        <line num="479" count="2" type="stmt"/>
+        <line num="489" count="2" type="stmt"/>
+        <line num="490" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="491" count="2" type="stmt"/>
+        <line num="492" count="2" type="stmt"/>
+        <line num="493" count="2" type="stmt"/>
+        <line num="496" count="2" type="stmt"/>
+        <line num="508" count="2" type="stmt"/>
+        <line num="509" count="2" type="stmt"/>
+        <line num="510" count="2" type="stmt"/>
+        <line num="512" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="513" count="1" type="stmt"/>
+        <line num="518" count="1" type="stmt"/>
+        <line num="519" count="1" type="stmt"/>
+        <line num="522" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="523" count="0" type="stmt"/>
+        <line num="524" count="0" type="stmt"/>
+        <line num="525" count="0" type="stmt"/>
+        <line num="528" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="533" count="2" type="stmt"/>
+        <line num="537" count="2" type="stmt"/>
+        <line num="540" count="2" type="stmt"/>
+        <line num="556" count="2" type="stmt"/>
+        <line num="575" count="2" type="stmt"/>
+        <line num="576" count="4" type="stmt"/>
+        <line num="577" count="4" type="stmt"/>
+        <line num="578" count="4" type="stmt"/>
+        <line num="580" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="581" count="1" type="stmt"/>
+        <line num="589" count="3" type="stmt"/>
+        <line num="594" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="595" count="1" type="stmt"/>
+        <line num="602" count="2" type="stmt"/>
+        <line num="608" count="2" type="stmt"/>
+        <line num="619" count="2" type="stmt"/>
+        <line num="629" count="2" type="stmt"/>
+        <line num="630" count="1" type="stmt"/>
+        <line num="644" count="1" type="stmt"/>
+        <line num="654" count="2" type="stmt"/>
+        <line num="655" count="3" type="stmt"/>
+        <line num="657" count="3" type="cond" truecount="4" falsecount="0"/>
+        <line num="658" count="1" type="stmt"/>
+        <line num="666" count="2" type="stmt"/>
+        <line num="670" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="671" count="1" type="stmt"/>
+        <line num="678" count="1" type="stmt"/>
+        <line num="686" count="1" type="stmt"/>
+        <line num="688" count="1" type="stmt"/>
+        <line num="698" count="2" type="stmt"/>
+        <line num="699" count="3" type="stmt"/>
+        <line num="700" count="3" type="stmt"/>
+        <line num="703" count="3" type="stmt"/>
+        <line num="708" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="709" count="1" type="stmt"/>
+        <line num="717" count="2" type="stmt"/>
+        <line num="718" count="2" type="stmt"/>
+        <line num="719" count="2" type="stmt"/>
+        <line num="721" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="722" count="1" type="stmt"/>
+        <line num="723" count="1" type="stmt"/>
+        <line num="725" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="726" count="0" type="stmt"/>
+        <line num="727" count="0" type="stmt"/>
+        <line num="729" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="730" count="0" type="stmt"/>
+        <line num="731" count="0" type="stmt"/>
+        <line num="733" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="734" count="0" type="stmt"/>
+        <line num="735" count="0" type="stmt"/>
+        <line num="738" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="739" count="1" type="stmt"/>
+        <line num="746" count="1" type="stmt"/>
+        <line num="747" count="1" type="stmt"/>
+        <line num="753" count="1" type="stmt"/>
+        <line num="755" count="1" type="stmt"/>
+        <line num="765" count="2" type="stmt"/>
+        <line num="766" count="3" type="stmt"/>
+        <line num="767" count="3" type="stmt"/>
+        <line num="769" count="3" type="cond" truecount="4" falsecount="0"/>
+        <line num="770" count="1" type="stmt"/>
+        <line num="777" count="2" type="stmt"/>
+        <line num="778" count="2" type="cond" truecount="4" falsecount="0"/>
+        <line num="779" count="1" type="stmt"/>
+        <line num="786" count="1" type="stmt"/>
+        <line num="787" count="1" type="stmt"/>
+        <line num="788" count="1" type="stmt"/>
+        <line num="791" count="1" type="stmt"/>
+        <line num="797" count="1" type="stmt"/>
+        <line num="800" count="1" type="stmt"/>
+        <line num="801" count="1" type="stmt"/>
+        <line num="802" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="803" count="0" type="stmt"/>
+        <line num="804" count="0" type="stmt"/>
+        <line num="806" count="1" type="stmt"/>
+        <line num="809" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="810" count="1" type="stmt"/>
+        <line num="811" count="2" type="stmt"/>
+        <line num="813" count="2" type="stmt"/>
+        <line num="820" count="1" type="stmt"/>
+        <line num="828" count="1" type="stmt"/>
+        <line num="841" count="1" type="stmt"/>
+        <line num="843" count="1" type="stmt"/>
+        <line num="857" count="0" type="stmt"/>
+        <line num="858" count="0" type="stmt"/>
+        <line num="860" count="1" type="stmt"/>
+        <line num="867" count="2" type="stmt"/>
+        <line num="868" count="1" type="stmt"/>
+        <line num="881" count="1" type="stmt"/>
+        <line num="891" count="2" type="stmt"/>
+      </file>
+      <file name="auth.controller.js" path="D:\FoodBridge\backend\src\controllers\auth.controller.js">
+        <metrics statements="123" coveredstatements="121" conditionals="30" coveredconditionals="29" methods="10" coveredmethods="10"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="10" count="2" type="stmt"/>
+        <line num="17" count="2" type="stmt"/>
+        <line num="27" count="2" type="stmt"/>
+        <line num="28" count="4" type="stmt"/>
+        <line num="29" count="4" type="stmt"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="37" count="3" type="stmt"/>
+        <line num="40" count="3" type="stmt"/>
+        <line num="41" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="50" count="2" type="stmt"/>
+        <line num="53" count="2" type="stmt"/>
+        <line num="54" count="2" type="stmt"/>
+        <line num="61" count="2" type="stmt"/>
+        <line num="64" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="65" count="1" type="stmt"/>
+        <line num="73" count="2" type="stmt"/>
+        <line num="74" count="2" type="stmt"/>
+        <line num="76" count="2" type="stmt"/>
+        <line num="91" count="2" type="stmt"/>
+        <line num="92" count="4" type="stmt"/>
+        <line num="95" count="4" type="stmt"/>
+        <line num="96" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="97" count="1" type="stmt"/>
+        <line num="104" count="3" type="stmt"/>
+        <line num="107" count="3" type="stmt"/>
+        <line num="108" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="109" count="1" type="stmt"/>
+        <line num="117" count="2" type="stmt"/>
+        <line num="120" count="2" type="stmt"/>
+        <line num="121" count="2" type="stmt"/>
+        <line num="124" count="2" type="stmt"/>
+        <line num="126" count="2" type="stmt"/>
+        <line num="141" count="2" type="stmt"/>
+        <line num="142" count="2" type="stmt"/>
+        <line num="145" count="2" type="stmt"/>
+        <line num="150" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="151" count="1" type="stmt"/>
+        <line num="159" count="1" type="stmt"/>
+        <line num="160" count="1" type="stmt"/>
+        <line num="162" count="1" type="stmt"/>
+        <line num="173" count="2" type="stmt"/>
+        <line num="174" count="3" type="stmt"/>
+        <line num="177" count="3" type="stmt"/>
+        <line num="182" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="183" count="1" type="stmt"/>
+        <line num="190" count="2" type="stmt"/>
+        <line num="194" count="2" type="stmt"/>
+        <line num="195" count="2" type="stmt"/>
+        <line num="198" count="1" type="stmt"/>
+        <line num="199" count="1" type="stmt"/>
+        <line num="207" count="1" type="stmt"/>
+        <line num="212" count="1" type="stmt"/>
+        <line num="214" count="1" type="stmt"/>
+        <line num="225" count="2" type="stmt"/>
+        <line num="226" count="2" type="stmt"/>
+        <line num="228" count="2" type="stmt"/>
+        <line num="235" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="236" count="1" type="stmt"/>
+        <line num="243" count="1" type="stmt"/>
+        <line num="261" count="2" type="stmt"/>
+        <line num="263" count="3" type="stmt"/>
+        <line num="266" count="3" type="stmt"/>
+        <line num="269" count="3" type="stmt"/>
+        <line num="276" count="3" type="stmt"/>
+        <line num="279" count="3" type="stmt"/>
+        <line num="281" count="2" type="stmt"/>
+        <line num="289" count="2" type="stmt"/>
+        <line num="290" count="4" type="stmt"/>
+        <line num="293" count="4" type="stmt"/>
+        <line num="296" count="4" type="stmt"/>
+        <line num="301" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="303" count="2" type="stmt"/>
+        <line num="310" count="2" type="stmt"/>
+        <line num="312" count="2" type="stmt"/>
+        <line num="313" count="2" type="stmt"/>
+        <line num="315" count="1" type="stmt"/>
+        <line num="316" count="1" type="stmt"/>
+        <line num="323" count="1" type="stmt"/>
+        <line num="334" count="2" type="stmt"/>
+        <line num="335" count="3" type="stmt"/>
+        <line num="338" count="3" type="stmt"/>
+        <line num="346" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="347" count="1" type="stmt"/>
+        <line num="355" count="2" type="stmt"/>
+        <line num="356" count="2" type="stmt"/>
+        <line num="357" count="2" type="stmt"/>
+        <line num="358" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="359" count="1" type="stmt"/>
+        <line num="360" count="1" type="stmt"/>
+        <line num="364" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="365" count="1" type="stmt"/>
+        <line num="373" count="1" type="stmt"/>
+        <line num="376" count="1" type="stmt"/>
+        <line num="382" count="1" type="stmt"/>
+        <line num="387" count="1" type="stmt"/>
+        <line num="399" count="2" type="stmt"/>
+        <line num="400" count="3" type="stmt"/>
+        <line num="402" count="3" type="stmt"/>
+        <line num="405" count="3" type="stmt"/>
+        <line num="410" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="411" count="1" type="stmt"/>
+        <line num="418" count="2" type="stmt"/>
+        <line num="421" count="2" type="stmt"/>
+        <line num="429" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="430" count="2" type="stmt"/>
+        <line num="431" count="2" type="stmt"/>
+        <line num="433" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="434" count="1" type="stmt"/>
+        <line num="443" count="1" type="stmt"/>
+        <line num="448" count="1" type="stmt"/>
+        <line num="449" count="1" type="stmt"/>
+        <line num="451" count="0" type="stmt"/>
+        <line num="452" count="0" type="stmt"/>
+        <line num="459" count="1" type="stmt"/>
+        <line num="466" count="2" type="stmt"/>
+      </file>
+      <file name="category.controller.js" path="D:\FoodBridge\backend\src\controllers\category.controller.js">
+        <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="8" count="4" type="stmt"/>
+        <line num="14" count="3" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
+      </file>
+      <file name="donor.controller.js" path="D:\FoodBridge\backend\src\controllers\donor.controller.js">
+        <metrics statements="45" coveredstatements="43" conditionals="24" coveredconditionals="16" methods="9" coveredmethods="8"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="11" count="2" type="stmt"/>
+        <line num="16" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="27" count="2" type="stmt"/>
+        <line num="35" count="2" type="stmt"/>
+        <line num="55" count="2" type="stmt"/>
+        <line num="56" count="2" type="stmt"/>
+        <line num="57" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="58" count="1" type="stmt"/>
+        <line num="65" count="1" type="stmt"/>
+        <line num="66" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="71" count="2" type="stmt"/>
+        <line num="77" count="2" type="stmt"/>
+        <line num="93" count="2" type="stmt"/>
+        <line num="107" count="2" type="stmt"/>
+        <line num="108" count="2" type="stmt"/>
+        <line num="109" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="110" count="2" type="stmt"/>
+        <line num="112" count="2" type="stmt"/>
+        <line num="131" count="2" type="stmt"/>
+        <line num="136" count="2" type="stmt"/>
+        <line num="138" count="2" type="stmt"/>
+        <line num="156" count="2" type="stmt"/>
+        <line num="157" count="2" type="stmt"/>
+        <line num="159" count="2" type="stmt"/>
+        <line num="178" count="2" type="stmt"/>
+        <line num="179" count="2" type="stmt"/>
+        <line num="180" count="1" type="stmt"/>
+        <line num="189" count="2" type="stmt"/>
+        <line num="191" count="2" type="stmt"/>
+        <line num="192" count="2" type="stmt"/>
+        <line num="193" count="2" type="stmt"/>
+        <line num="199" count="2" type="stmt"/>
+        <line num="200" count="2" type="stmt"/>
+        <line num="203" count="2" type="stmt"/>
+        <line num="208" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="213" count="2" type="stmt"/>
+        <line num="230" count="2" type="stmt"/>
+        <line num="238" count="1" type="stmt"/>
+        <line num="248" count="2" type="stmt"/>
+      </file>
+      <file name="listing.controller.js" path="D:\FoodBridge\backend\src\controllers\listing.controller.js">
+        <metrics statements="103" coveredstatements="94" conditionals="90" coveredconditionals="72" methods="9" coveredmethods="8"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="9" count="3" type="cond" truecount="4" falsecount="0"/>
+        <line num="10" count="2" type="stmt"/>
+        <line num="23" count="2" type="stmt"/>
+        <line num="24" count="6" type="stmt"/>
+        <line num="33" count="6" type="stmt"/>
+        <line num="36" count="6" type="cond" truecount="4" falsecount="0"/>
+        <line num="37" count="1" type="stmt"/>
+        <line num="39" count="5" type="cond" truecount="5" falsecount="0"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="42" count="4" type="cond" truecount="4" falsecount="0"/>
+        <line num="43" count="1" type="stmt"/>
+        <line num="45" count="3" type="cond" truecount="3" falsecount="1"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="48" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="49" count="1" type="stmt"/>
+        <line num="52" count="2" type="stmt"/>
+        <line num="53" count="2" type="stmt"/>
+        <line num="54" count="2" type="stmt"/>
+        <line num="57" count="2" type="stmt"/>
+        <line num="63" count="1" type="stmt"/>
+        <line num="66" count="1" type="stmt"/>
+        <line num="78" count="1" type="stmt"/>
+        <line num="81" count="1" type="stmt"/>
+        <line num="82" count="1" type="cond" truecount="2" falsecount="2"/>
+        <line num="83" count="0" type="stmt"/>
+        <line num="84" count="0" type="stmt"/>
+        <line num="90" count="0" type="stmt"/>
+        <line num="94" count="1" type="stmt"/>
+        <line num="97" count="1" type="stmt"/>
+        <line num="98" count="1" type="stmt"/>
+        <line num="100" count="1" type="stmt"/>
+        <line num="106" count="1" type="stmt"/>
+        <line num="107" count="1" type="stmt"/>
+        <line num="109" count="2" type="stmt"/>
+        <line num="116" count="2" type="stmt"/>
+        <line num="117" count="1" type="cond" truecount="3" falsecount="0"/>
+        <line num="119" count="1" type="stmt"/>
+        <line num="120" count="1" type="stmt"/>
+        <line num="121" count="1" type="stmt"/>
+        <line num="124" count="1" type="stmt"/>
+        <line num="126" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="127" count="0" type="stmt"/>
+        <line num="129" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="130" count="0" type="stmt"/>
+        <line num="133" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="136" count="1" type="stmt"/>
+        <line num="153" count="1" type="stmt"/>
+        <line num="154" count="1" type="stmt"/>
+        <line num="157" count="1" type="stmt"/>
+        <line num="158" count="1" type="stmt"/>
+        <line num="164" count="1" type="stmt"/>
+        <line num="166" count="1" type="stmt"/>
+        <line num="184" count="2" type="stmt"/>
+        <line num="185" count="1" type="stmt"/>
+        <line num="187" count="1" type="stmt"/>
+        <line num="203" count="1" type="stmt"/>
+        <line num="204" count="1" type="stmt"/>
+        <line num="206" count="1" type="stmt"/>
+        <line num="216" count="2" type="stmt"/>
+        <line num="217" count="2" type="stmt"/>
+        <line num="219" count="2" type="stmt"/>
+        <line num="231" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="232" count="1" type="stmt"/>
+        <line num="235" count="1" type="stmt"/>
+        <line num="238" count="1" type="stmt"/>
+        <line num="241" count="1" type="stmt"/>
+        <line num="246" count="1" type="stmt"/>
+        <line num="256" count="2" type="stmt"/>
+        <line num="257" count="3" type="stmt"/>
+        <line num="258" count="3" type="stmt"/>
+        <line num="261" count="3" type="stmt"/>
+        <line num="265" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="266" count="1" type="stmt"/>
+        <line num="268" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="269" count="1" type="stmt"/>
+        <line num="276" count="1" type="stmt"/>
+        <line num="279" count="1" type="cond" truecount="2" falsecount="3"/>
+        <line num="280" count="0" type="stmt"/>
+        <line num="282" count="1" type="cond" truecount="2" falsecount="2"/>
+        <line num="283" count="0" type="stmt"/>
+        <line num="285" count="1" type="cond" truecount="2" falsecount="3"/>
+        <line num="286" count="0" type="stmt"/>
+        <line num="289" count="1" type="stmt"/>
+        <line num="316" count="1" type="stmt"/>
+        <line num="317" count="1" type="stmt"/>
+        <line num="319" count="1" type="stmt"/>
+        <line num="329" count="2" type="stmt"/>
+        <line num="330" count="3" type="stmt"/>
+        <line num="331" count="3" type="stmt"/>
+        <line num="334" count="3" type="stmt"/>
+        <line num="338" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="339" count="1" type="stmt"/>
+        <line num="341" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="342" count="1" type="stmt"/>
+        <line num="345" count="1" type="stmt"/>
+        <line num="354" count="1" type="stmt"/>
+        <line num="355" count="1" type="stmt"/>
+        <line num="357" count="1" type="stmt"/>
+        <line num="364" count="2" type="stmt"/>
+      </file>
+      <file name="recipient.controller.js" path="D:\FoodBridge\backend\src\controllers\recipient.controller.js">
+        <metrics statements="113" coveredstatements="97" conditionals="90" coveredconditionals="66" methods="9" coveredmethods="7"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="19" count="3" type="stmt"/>
+        <line num="22" count="3" type="cond" truecount="1" falsecount="3"/>
+        <line num="23" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="24" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="25" count="3" type="stmt"/>
+        <line num="26" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="27" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="28" count="3" type="stmt"/>
+        <line num="31" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="32" count="3" type="stmt"/>
+        <line num="38" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="47" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="52" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="53" count="1" type="stmt"/>
+        <line num="57" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="58" count="1" type="stmt"/>
+        <line num="62" count="3" type="stmt"/>
+        <line num="63" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="65" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="66" count="0" type="stmt"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="70" count="0" type="stmt"/>
+        <line num="80" count="3" type="stmt"/>
+        <line num="83" count="3" type="cond" truecount="2" falsecount="2"/>
+        <line num="85" count="3" type="cond" truecount="2" falsecount="2"/>
+        <line num="87" count="0" type="stmt"/>
+        <line num="88" count="0" type="stmt"/>
+        <line num="90" count="0" type="stmt"/>
+        <line num="91" count="0" type="stmt"/>
+        <line num="94" count="3" type="stmt"/>
+        <line num="95" count="3" type="stmt"/>
+        <line num="99" count="3" type="stmt"/>
+        <line num="144" count="3" type="stmt"/>
+        <line num="147" count="3" type="stmt"/>
+        <line num="148" count="3" type="stmt"/>
+        <line num="155" count="3" type="stmt"/>
+        <line num="156" count="3" type="stmt"/>
+        <line num="158" count="3" type="stmt"/>
+        <line num="176" count="3" type="stmt"/>
+        <line num="191" count="2" type="stmt"/>
+        <line num="192" count="4" type="stmt"/>
+        <line num="193" count="4" type="stmt"/>
+        <line num="195" count="4" type="cond" truecount="4" falsecount="0"/>
+        <line num="196" count="1" type="stmt"/>
+        <line num="203" count="3" type="cond" truecount="5" falsecount="1"/>
+        <line num="204" count="0" type="stmt"/>
+        <line num="212" count="3" type="stmt"/>
+        <line num="217" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="218" count="0" type="stmt"/>
+        <line num="225" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="226" count="1" type="stmt"/>
+        <line num="234" count="2" type="stmt"/>
+        <line num="240" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="241" count="1" type="stmt"/>
+        <line num="249" count="1" type="stmt"/>
+        <line num="250" count="1" type="stmt"/>
+        <line num="251" count="1" type="stmt"/>
+        <line num="254" count="1" type="stmt"/>
+        <line num="259" count="1" type="stmt"/>
+        <line num="261" count="1" type="stmt"/>
+        <line num="268" count="1" type="stmt"/>
+        <line num="273" count="1" type="stmt"/>
+        <line num="275" count="1" type="stmt"/>
+        <line num="281" count="0" type="stmt"/>
+        <line num="282" count="0" type="stmt"/>
+        <line num="284" count="1" type="stmt"/>
+        <line num="292" count="2" type="stmt"/>
+        <line num="293" count="2" type="stmt"/>
+        <line num="296" count="2" type="stmt"/>
+        <line num="328" count="2" type="stmt"/>
+        <line num="333" count="2" type="stmt"/>
+        <line num="344" count="2" type="stmt"/>
+        <line num="345" count="3" type="stmt"/>
+        <line num="346" count="3" type="stmt"/>
+        <line num="349" count="3" type="stmt"/>
+        <line num="355" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="356" count="1" type="stmt"/>
+        <line num="363" count="2" type="stmt"/>
+        <line num="366" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="367" count="1" type="stmt"/>
+        <line num="375" count="1" type="stmt"/>
+        <line num="376" count="1" type="stmt"/>
+        <line num="377" count="1" type="stmt"/>
+        <line num="379" count="1" type="stmt"/>
+        <line num="385" count="1" type="stmt"/>
+        <line num="391" count="1" type="stmt"/>
+        <line num="393" count="1" type="stmt"/>
+        <line num="399" count="0" type="stmt"/>
+        <line num="400" count="0" type="stmt"/>
+        <line num="402" count="1" type="stmt"/>
+        <line num="410" count="2" type="stmt"/>
+        <line num="411" count="5" type="stmt"/>
+        <line num="412" count="5" type="stmt"/>
+        <line num="415" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="416" count="1" type="stmt"/>
+        <line num="423" count="4" type="cond" truecount="6" falsecount="0"/>
+        <line num="424" count="1" type="stmt"/>
+        <line num="432" count="3" type="stmt"/>
+        <line num="441" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="442" count="1" type="stmt"/>
+        <line num="449" count="2" type="stmt"/>
+        <line num="452" count="2" type="stmt"/>
+        <line num="458" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="459" count="1" type="stmt"/>
+        <line num="467" count="1" type="stmt"/>
+        <line num="474" count="1" type="stmt"/>
+        <line num="486" count="1" type="stmt"/>
+        <line num="493" count="2" type="stmt"/>
+      </file>
+      <file name="volunteer.controller.js" path="D:\FoodBridge\backend\src\controllers\volunteer.controller.js">
+        <metrics statements="246" coveredstatements="170" conditionals="176" coveredconditionals="77" methods="20" coveredmethods="16"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="9" count="25" type="stmt"/>
+        <line num="13" count="25" type="cond" truecount="2" falsecount="0"/>
+        <line num="14" count="18" type="stmt"/>
+        <line num="20" count="2" type="stmt"/>
+        <line num="25" count="2" type="stmt"/>
+        <line num="30" count="2" type="stmt"/>
+        <line num="31" count="2" type="stmt"/>
+        <line num="32" count="2" type="stmt"/>
+        <line num="34" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="43" count="1" type="stmt"/>
+        <line num="57" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="58" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="61" count="1" type="stmt"/>
+        <line num="68" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="71" count="1" type="stmt"/>
+        <line num="102" count="1" type="stmt"/>
+        <line num="104" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="106" count="0" type="stmt"/>
+        <line num="107" count="0" type="stmt"/>
+        <line num="108" count="0" type="stmt"/>
+        <line num="115" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="116" count="0" type="stmt"/>
+        <line num="126" count="0" type="stmt"/>
+        <line num="131" count="0" type="stmt"/>
+        <line num="132" count="0" type="stmt"/>
+        <line num="133" count="0" type="stmt"/>
+        <line num="142" count="0" type="stmt"/>
+        <line num="143" count="0" type="stmt"/>
+        <line num="152" count="0" type="stmt"/>
+        <line num="157" count="1" type="stmt"/>
+        <line num="176" count="1" type="stmt"/>
+        <line num="195" count="2" type="stmt"/>
+        <line num="196" count="2" type="stmt"/>
+        <line num="197" count="2" type="stmt"/>
+        <line num="199" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="200" count="1" type="stmt"/>
+        <line num="208" count="1" type="stmt"/>
+        <line num="212" count="1" type="stmt"/>
+        <line num="213" count="1" type="stmt"/>
+        <line num="216" count="1" type="stmt"/>
+        <line num="244" count="1" type="stmt"/>
+        <line num="245" count="1" type="stmt"/>
+        <line num="246" count="1" type="stmt"/>
+        <line num="248" count="1" type="cond" truecount="5" falsecount="1"/>
+        <line num="249" count="1" type="stmt"/>
+        <line num="250" count="1" type="stmt"/>
+        <line num="254" count="1" type="stmt"/>
+        <line num="257" count="0" type="stmt"/>
+        <line num="264" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="268" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="270" count="1" type="stmt"/>
+        <line num="285" count="1" type="stmt"/>
+        <line num="286" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="287" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="288" count="0" type="stmt"/>
+        <line num="291" count="1" type="stmt"/>
+        <line num="292" count="1" type="stmt"/>
+        <line num="295" count="1" type="stmt"/>
+        <line num="306" count="0" type="stmt"/>
+        <line num="307" count="0" type="stmt"/>
+        <line num="308" count="0" type="stmt"/>
+        <line num="309" count="0" type="stmt"/>
+        <line num="311" count="0" type="stmt"/>
+        <line num="313" count="0" type="stmt"/>
+        <line num="319" count="2" type="stmt"/>
+        <line num="320" count="4" type="stmt"/>
+        <line num="321" count="4" type="stmt"/>
+        <line num="322" count="4" type="stmt"/>
+        <line num="324" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="325" count="1" type="stmt"/>
+        <line num="333" count="3" type="stmt"/>
+        <line num="340" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="341" count="1" type="stmt"/>
+        <line num="348" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="349" count="1" type="stmt"/>
+        <line num="357" count="1" type="stmt"/>
+        <line num="362" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="363" count="1" type="stmt"/>
+        <line num="371" count="0" type="stmt"/>
+        <line num="372" count="0" type="stmt"/>
+        <line num="395" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="398" count="0" type="stmt"/>
+        <line num="405" count="0" type="stmt"/>
+        <line num="408" count="0" type="stmt"/>
+        <line num="412" count="0" type="stmt"/>
+        <line num="414" count="0" type="stmt"/>
+        <line num="417" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="418" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="420" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="421" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="422" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="423" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="425" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="426" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="428" count="0" type="cond" truecount="0" falsecount="6"/>
+        <line num="429" count="0" type="stmt"/>
+        <line num="433" count="0" type="stmt"/>
+        <line num="435" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="437" count="0" type="stmt"/>
+        <line num="460" count="0" type="stmt"/>
+        <line num="461" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="462" count="0" type="stmt"/>
+        <line num="470" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="471" count="0" type="stmt"/>
+        <line num="482" count="0" type="stmt"/>
+        <line num="489" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="490" count="0" type="stmt"/>
+        <line num="500" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="501" count="0" type="stmt"/>
+        <line num="502" count="0" type="stmt"/>
+        <line num="504" count="0" type="stmt"/>
+        <line num="505" count="0" type="stmt"/>
+        <line num="510" count="0" type="stmt"/>
+        <line num="519" count="0" type="stmt"/>
+        <line num="551" count="2" type="stmt"/>
+        <line num="552" count="2" type="stmt"/>
+        <line num="553" count="2" type="stmt"/>
+        <line num="555" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="556" count="1" type="stmt"/>
+        <line num="563" count="1" type="stmt"/>
+        <line num="588" count="1" type="stmt"/>
+        <line num="609" count="1" type="stmt"/>
+        <line num="620" count="2" type="stmt"/>
+        <line num="630" count="2" type="stmt"/>
+        <line num="636" count="2" type="stmt"/>
+        <line num="637" count="7" type="stmt"/>
+        <line num="638" count="7" type="stmt"/>
+        <line num="639" count="7" type="stmt"/>
+        <line num="640" count="7" type="stmt"/>
+        <line num="642" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="643" count="1" type="stmt"/>
+        <line num="650" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="651" count="1" type="stmt"/>
+        <line num="659" count="5" type="stmt"/>
+        <line num="660" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="661" count="1" type="stmt"/>
+        <line num="669" count="4" type="stmt"/>
+        <line num="679" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="680" count="1" type="stmt"/>
+        <line num="687" count="3" type="stmt"/>
+        <line num="689" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="690" count="1" type="stmt"/>
+        <line num="698" count="2" type="stmt"/>
+        <line num="699" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="700" count="1" type="stmt"/>
+        <line num="708" count="1" type="stmt"/>
+        <line num="709" count="1" type="stmt"/>
+        <line num="710" count="1" type="stmt"/>
+        <line num="712" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="713" count="1" type="stmt"/>
+        <line num="720" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="721" count="0" type="stmt"/>
+        <line num="728" count="0" type="stmt"/>
+        <line num="734" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="735" count="0" type="stmt"/>
+        <line num="743" count="0" type="stmt"/>
+        <line num="747" count="0" type="stmt"/>
+        <line num="752" count="0" type="stmt"/>
+        <line num="759" count="0" type="stmt"/>
+        <line num="763" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="764" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="765" count="0" type="stmt"/>
+        <line num="768" count="0" type="stmt"/>
+        <line num="779" count="0" type="stmt"/>
+        <line num="791" count="1" type="stmt"/>
+        <line num="793" count="1" type="stmt"/>
+        <line num="799" count="0" type="stmt"/>
+        <line num="800" count="0" type="stmt"/>
+        <line num="802" count="1" type="stmt"/>
+        <line num="809" count="2" type="stmt"/>
+        <line num="810" count="2" type="stmt"/>
+        <line num="811" count="2" type="stmt"/>
+        <line num="813" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="814" count="1" type="stmt"/>
+        <line num="821" count="1" type="stmt"/>
+        <line num="830" count="1" type="stmt"/>
+        <line num="831" count="1" type="stmt"/>
+        <line num="832" count="7" type="stmt"/>
+        <line num="835" count="1" type="stmt"/>
+        <line num="836" count="2" type="stmt"/>
+        <line num="837" count="2" type="stmt"/>
+        <line num="844" count="1" type="stmt"/>
+        <line num="854" count="2" type="stmt"/>
+        <line num="855" count="3" type="stmt"/>
+        <line num="856" count="3" type="stmt"/>
+        <line num="857" count="3" type="stmt"/>
+        <line num="859" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="860" count="0" type="stmt"/>
+        <line num="867" count="3" type="cond" truecount="6" falsecount="0"/>
+        <line num="868" count="1" type="stmt"/>
+        <line num="875" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="876" count="1" type="stmt"/>
+        <line num="883" count="1" type="stmt"/>
+        <line num="884" count="1" type="stmt"/>
+        <line num="885" count="1" type="stmt"/>
+        <line num="888" count="1" type="stmt"/>
+        <line num="895" count="1" type="stmt"/>
+        <line num="896" count="1" type="cond" truecount="3" falsecount="1"/>
+        <line num="897" count="1" type="stmt"/>
+        <line num="904" count="1" type="stmt"/>
+        <line num="906" count="0" type="stmt"/>
+        <line num="907" count="0" type="stmt"/>
+        <line num="909" count="1" type="stmt"/>
+        <line num="913" count="1" type="stmt"/>
+        <line num="921" count="1" type="stmt"/>
+        <line num="922" count="1" type="stmt"/>
+        <line num="923" count="7" type="stmt"/>
+        <line num="925" count="1" type="stmt"/>
+        <line num="926" count="1" type="stmt"/>
+        <line num="933" count="1" type="stmt"/>
+        <line num="943" count="2" type="stmt"/>
+        <line num="944" count="1" type="stmt"/>
+        <line num="946" count="1" type="stmt"/>
+        <line num="958" count="3" type="stmt"/>
+        <line num="967" count="3" type="stmt"/>
+        <line num="970" count="3" type="stmt"/>
+        <line num="973" count="3" type="stmt"/>
+        <line num="974" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="976" count="1" type="stmt"/>
+        <line num="990" count="2" type="stmt"/>
+        <line num="991" count="3" type="stmt"/>
+        <line num="992" count="3" type="stmt"/>
+        <line num="993" count="3" type="stmt"/>
+        <line num="995" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="996" count="1" type="stmt"/>
+        <line num="1003" count="2" type="cond" truecount="4" falsecount="0"/>
+        <line num="1004" count="1" type="stmt"/>
+        <line num="1012" count="1" type="stmt"/>
+        <line num="1020" count="1" type="stmt"/>
+        <line num="1037" count="1" type="stmt"/>
+        <line num="1038" count="1" type="stmt"/>
+        <line num="1040" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="1041" count="1" type="stmt"/>
+        <line num="1042" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="1044" count="1" type="cond" truecount="3" falsecount="1"/>
+        <line num="1045" count="1" type="stmt"/>
+        <line num="1046" count="1" type="stmt"/>
+        <line num="1050" count="1" type="stmt"/>
+        <line num="1052" count="0" type="stmt"/>
+        <line num="1057" count="1" type="stmt"/>
+        <line num="1068" count="2" type="stmt"/>
+      </file>
+    </package>
+    <package name="middleware">
+      <metrics statements="37" coveredstatements="36" conditionals="15" coveredconditionals="15" methods="7" coveredmethods="7"/>
+      <file name="auth.middleware.js" path="D:\FoodBridge\backend\src\middleware\auth.middleware.js">
+        <metrics statements="15" coveredstatements="15" conditionals="7" coveredconditionals="7" methods="3" coveredmethods="3"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="9" count="14" type="cond" truecount="3" falsecount="0"/>
+        <line num="12" count="14" type="cond" truecount="2" falsecount="0"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="20" count="10" type="stmt"/>
+        <line num="21" count="10" type="stmt"/>
+        <line num="22" count="8" type="stmt"/>
+        <line num="23" count="8" type="stmt"/>
+        <line num="25" count="2" type="stmt"/>
+        <line num="37" count="4" type="stmt"/>
+        <line num="38" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="39" count="2" type="stmt"/>
+        <line num="45" count="2" type="stmt"/>
+        <line num="48" count="2" type="stmt"/>
+      </file>
+      <file name="cache.middleware.js" path="D:\FoodBridge\backend\src\middleware\cache.middleware.js">
+        <metrics statements="22" coveredstatements="21" conditionals="8" coveredconditionals="8" methods="4" coveredmethods="4"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="11" count="2" type="stmt"/>
+        <line num="12" count="13" type="stmt"/>
+        <line num="14" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="15" count="7" type="stmt"/>
+        <line num="17" count="7" type="stmt"/>
+        <line num="18" count="7" type="stmt"/>
+        <line num="20" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="31" count="6" type="stmt"/>
+        <line num="33" count="6" type="stmt"/>
+        <line num="35" count="3" type="cond" truecount="4" falsecount="0"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
+        <line num="38" count="1" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="45" count="3" type="stmt"/>
+        <line num="46" count="3" type="stmt"/>
+        <line num="49" count="6" type="stmt"/>
+        <line num="53" count="2" type="stmt"/>
+      </file>
+    </package>
+    <package name="routes">
+      <metrics statements="124" coveredstatements="118" conditionals="12" coveredconditionals="7" methods="7" coveredmethods="6"/>
+      <file name="admin.routes.js" path="D:\FoodBridge\backend\src\routes\admin.routes.js">
+        <metrics statements="21" coveredstatements="21" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="37" count="1" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="44" count="1" type="stmt"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="48" count="1" type="stmt"/>
+        <line num="49" count="1" type="stmt"/>
+        <line num="50" count="1" type="stmt"/>
+        <line num="53" count="1" type="stmt"/>
+        <line num="54" count="1" type="stmt"/>
+        <line num="56" count="1" type="stmt"/>
+      </file>
+      <file name="auth.routes.js" path="D:\FoodBridge\backend\src\routes\auth.routes.js">
+        <metrics statements="25" coveredstatements="25" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="12" count="5" type="stmt"/>
+        <line num="13" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="14" count="4" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="40" count="3" type="stmt"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="54" count="1" type="stmt"/>
+        <line num="60" count="1" type="stmt"/>
+        <line num="72" count="1" type="stmt"/>
+        <line num="81" count="1" type="stmt"/>
+        <line num="82" count="1" type="stmt"/>
+        <line num="83" count="1" type="stmt"/>
+        <line num="84" count="1" type="stmt"/>
+        <line num="85" count="1" type="stmt"/>
+        <line num="88" count="1" type="stmt"/>
+        <line num="89" count="1" type="stmt"/>
+        <line num="90" count="1" type="stmt"/>
+        <line num="92" count="1" type="stmt"/>
+      </file>
+      <file name="category.routes.js" path="D:\FoodBridge\backend\src\routes\category.routes.js">
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+      </file>
+      <file name="donor.routes.js" path="D:\FoodBridge\backend\src\routes\donor.routes.js">
+        <metrics statements="14" coveredstatements="11" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="16" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="37" count="1" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+      </file>
+      <file name="listing.routes.js" path="D:\FoodBridge\backend\src\routes\listing.routes.js">
+        <metrics statements="23" coveredstatements="22" conditionals="4" coveredconditionals="3" methods="2" coveredmethods="2"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="21" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="35" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="48" count="1" type="stmt"/>
+        <line num="75" count="1" type="stmt"/>
+        <line num="78" count="1" type="stmt"/>
+        <line num="81" count="1" type="stmt"/>
+        <line num="84" count="1" type="stmt"/>
+        <line num="87" count="1" type="stmt"/>
+        <line num="90" count="1" type="stmt"/>
+        <line num="92" count="1" type="stmt"/>
+      </file>
+      <file name="recipient.routes.js" path="D:\FoodBridge\backend\src\routes\recipient.routes.js">
+        <metrics statements="16" coveredstatements="15" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="44" count="1" type="stmt"/>
+      </file>
+      <file name="volunteer.routes.js" path="D:\FoodBridge\backend\src\routes\volunteer.routes.js">
+        <metrics statements="20" coveredstatements="19" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="22" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="48" count="1" type="stmt"/>
+        <line num="51" count="1" type="stmt"/>
+        <line num="52" count="1" type="stmt"/>
+        <line num="55" count="1" type="stmt"/>
+        <line num="58" count="1" type="stmt"/>
+        <line num="60" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="services">
+      <metrics statements="41" coveredstatements="37" conditionals="22" coveredconditionals="16" methods="4" coveredmethods="4"/>
+      <file name="email.service.js" path="D:\FoodBridge\backend\src\services\email.service.js">
+        <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="22" count="5" type="stmt"/>
+        <line num="138" count="5" type="stmt"/>
+        <line num="139" count="5" type="stmt"/>
+        <line num="141" count="1" type="stmt"/>
+        <line num="142" count="1" type="stmt"/>
+        <line num="146" count="2" type="stmt"/>
+      </file>
+      <file name="maps.service.js" path="D:\FoodBridge\backend\src\services\maps.service.js">
+        <metrics statements="32" coveredstatements="28" conditionals="22" coveredconditionals="16" methods="3" coveredmethods="3"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="14" count="2" type="stmt"/>
+        <line num="15" count="9" type="stmt"/>
+        <line num="16" count="9" type="stmt"/>
+        <line num="27" count="7" type="stmt"/>
+        <line num="30" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="31" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="33" count="7" type="stmt"/>
+        <line num="38" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="39" count="2" type="stmt"/>
+        <line num="40" count="2" type="stmt"/>
+        <line num="41" count="2" type="stmt"/>
+        <line num="51" count="2" type="stmt"/>
+        <line num="52" count="5" type="cond" truecount="4" falsecount="0"/>
+        <line num="53" count="2" type="stmt"/>
+        <line num="56" count="3" type="stmt"/>
+        <line num="57" count="3" type="stmt"/>
+        <line num="58" count="3" type="stmt"/>
+        <line num="61" count="3" type="stmt"/>
+        <line num="63" count="3" type="stmt"/>
+        <line num="64" count="4" type="stmt"/>
+        <line num="65" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="66" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="69" count="3" type="stmt"/>
+        <line num="77" count="2" type="stmt"/>
+        <line num="84" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="85" count="0" type="stmt"/>
+        <line num="86" count="0" type="stmt"/>
+        <line num="87" count="0" type="stmt"/>
+        <line num="88" count="0" type="stmt"/>
+        <line num="92" count="2" type="stmt"/>
+      </file>
+    </package>
+    <package name="utils">
+      <metrics statements="31" coveredstatements="31" conditionals="2" coveredconditionals="2" methods="6" coveredmethods="6"/>
+      <file name="asyncHandler.js" path="D:\FoodBridge\backend\src\utils\asyncHandler.js">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="5" count="97" type="stmt"/>
+        <line num="6" count="128" type="stmt"/>
+        <line num="9" count="9" type="stmt"/>
+      </file>
+      <file name="generateTokens.js" path="D:\FoodBridge\backend\src\utils\generateTokens.js">
+        <metrics statements="14" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="8" count="5" type="stmt"/>
+        <line num="14" count="2" type="stmt"/>
+        <line num="15" count="5" type="stmt"/>
+        <line num="23" count="2" type="stmt"/>
+        <line num="24" count="4" type="stmt"/>
+        <line num="26" count="4" type="stmt"/>
+        <line num="27" count="4" type="stmt"/>
+        <line num="30" count="4" type="stmt"/>
+        <line num="31" count="4" type="stmt"/>
+        <line num="36" count="3" type="stmt"/>
+        <line num="39" count="2" type="stmt"/>
+      </file>
+      <file name="invalidateCache.js" path="D:\FoodBridge\backend\src\utils\invalidateCache.js">
+        <metrics statements="14" coveredstatements="14" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="11" count="2" type="stmt"/>
+        <line num="12" count="5" type="stmt"/>
+        <line num="13" count="5" type="stmt"/>
+        <line num="14" count="5" type="stmt"/>
+        <line num="16" count="5" type="stmt"/>
+        <line num="17" count="6" type="stmt"/>
+        <line num="18" count="5" type="stmt"/>
+        <line num="19" count="5" type="stmt"/>
+        <line num="22" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="23" count="3" type="stmt"/>
+        <line num="24" count="2" type="stmt"/>
+        <line num="28" count="2" type="stmt"/>
+        <line num="32" count="2" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>
