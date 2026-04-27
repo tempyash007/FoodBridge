@@ -182,6 +182,13 @@ const getListings = asyncHandler(async (req, res) => {
   const ids = listingsResult.rows.map((r) => r.listing_id);
   await autoExpire(ids);
 
+  // Patch the in-memory array so the response reflects the updated status
+  listingsResult.rows.forEach((r) => {
+    if (r.status === 'available' && new Date(r.expiry_time) < new Date()) {
+      r.status = 'expired';
+    }
+  });
+
   // Count total for pagination
   const countParams = params.slice(0, params.length - 2); // strip LIMIT/OFFSET
   const countResult = await pool.query(
@@ -232,6 +239,13 @@ const getMyListings = asyncHandler(async (req, res) => {
   const ids = result.rows.map((r) => r.listing_id);
   await autoExpire(ids);
 
+  // Patch the in-memory array so the response reflects the updated status
+  result.rows.forEach((r) => {
+    if (r.status === 'available' && new Date(r.expiry_time) < new Date()) {
+      r.status = 'expired';
+    }
+  });
+
   return res.status(200).json({
     success: true,
     data: { listings: result.rows },
@@ -265,6 +279,10 @@ const getListingById = asyncHandler(async (req, res) => {
 
   // Auto-expire
   await autoExpire([listing.listing_id]);
+
+  if (listing.status === 'available' && new Date(listing.expiry_time) < new Date()) {
+    listing.status = 'expired';
+  }
 
   // Fetch all images
   const imagesResult = await pool.query(

@@ -66,6 +66,34 @@ const getNotifications = asyncHandler(async (req, res) => {
 });
 
 // ============================================================================
+// GET /api/notifications/broadcasts — Get Broadcasts for user's role
+// ============================================================================
+const getBroadcasts = asyncHandler(async (req, res) => {
+  const role = req.user.role;
+
+  const result = await pool.query(
+    `SELECT
+       bn.broadcast_id,
+       bn.title,
+       bn.message,
+       bn.target_role,
+       bn.created_at,
+       u.first_name || ' ' || u.last_name AS admin_name
+     FROM broadcast_notifications bn
+     JOIN users u ON bn.admin_id = u.user_id
+     WHERE bn.target_role IS NULL OR bn.target_role = $1
+     ORDER BY bn.created_at DESC`,
+    [role],
+  );
+
+  return res.status(200).json({
+    success: true,
+    data: { broadcasts: result.rows },
+    message: 'Broadcasts fetched successfully',
+  });
+});
+
+// ============================================================================
 // PATCH /api/notifications/:notification_id/read — Mark Single as Read
 // ============================================================================
 const markAsRead = asyncHandler(async (req, res) => {
@@ -170,4 +198,5 @@ module.exports = {
   markAllAsRead,
   deleteNotification,
   getUnreadCount,
+  getBroadcasts,
 };

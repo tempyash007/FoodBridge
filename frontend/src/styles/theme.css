@@ -1,0 +1,1269 @@
+/* ===== LIGHT / DARK THEME ADAPTATIONS ===== */
+/* This file overrides hardcoded dark colors with semantic vars */
+
+/* ── Body & Page ── */
+body {
+    background: var(--bg-body);
+    color: var(--text-secondary);
+}
+
+/* ── Dashboard Layout ── */
+.dashboard-page {
+    background: var(--bg-body);
+}
+
+.sidebar {
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .sidebar {
+    box-shadow: none;
+}
+
+.sidebar-brand span {
+    color: var(--text-primary);
+}
+
+.sidebar-section-label {
+    color: var(--text-quaternary);
+}
+
+.sidebar-link {
+    color: var(--text-tertiary);
+}
+
+.sidebar-link:hover {
+    background: var(--bg-card-hover);
+    color: var(--text-primary);
+}
+
+.sidebar-link.active {
+    background: rgba(16, 185, 129, 0.08);
+    color: var(--primary-500);
+}
+
+[data-theme="dark"] .sidebar-link.active {
+    color: var(--primary-400);
+}
+
+.sidebar-badge {
+    background: rgba(16, 185, 129, 0.08);
+    color: var(--primary-500);
+}
+
+.sidebar-footer {
+    border-top: 1px solid var(--border-default);
+}
+
+.user-name {
+    color: var(--text-primary);
+}
+
+.user-role {
+    color: var(--text-quaternary);
+}
+
+.dashboard-main {
+    background: var(--bg-body);
+}
+
+.dashboard-topbar {
+    background: var(--bg-topbar);
+    border-bottom: 1px solid var(--border-default);
+}
+
+[data-theme="dark"] .dashboard-topbar {
+    background: var(--bg-topbar);
+}
+
+.dashboard-title {
+    color: var(--text-primary);
+}
+
+.dashboard-subtitle {
+    color: var(--text-tertiary);
+}
+
+/* ── Cards ── */
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .card {
+    background: var(--bg-card);
+    border-color: var(--surface-glass-border);
+    box-shadow: none;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.card-header {
+    border-bottom: 1px solid var(--border-light);
+}
+
+.card-title {
+    color: var(--text-primary);
+}
+
+/* ── Metric Cards ── */
+.metric-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .metric-card {
+    background: var(--bg-card);
+    border-color: var(--surface-glass-border);
+    box-shadow: none;
+}
+
+.metric-value {
+    color: var(--text-primary);
+}
+
+.metric-label {
+    color: var(--text-tertiary);
+}
+
+/* ── Food Cards ── */
+.food-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .food-card {
+    background: var(--bg-card);
+    border-color: var(--surface-glass-border);
+    box-shadow: none;
+}
+
+.food-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.food-card-title {
+    color: var(--text-primary);
+}
+
+.food-card-meta {
+    color: var(--text-tertiary);
+}
+
+.food-card-donor {
+    color: var(--text-tertiary);
+}
+
+.food-tag {
+    background: var(--bg-input);
+    color: var(--text-tertiary);
+    border: 1px solid var(--border-default);
+}
+
+[data-theme="dark"] .food-tag {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: transparent;
+}
+
+/* ── Listing Rows ── */
+.listing-row {
+    border-bottom: 1px solid var(--border-light);
+}
+
+.listing-name {
+    color: var(--text-primary);
+}
+
+.listing-meta {
+    color: var(--text-tertiary);
+}
+
+.listing-meta .expiry-badge {
+    color: var(--accent-400);
+}
+
+/* ── History Table ── */
+.history-header-row {
+    color: var(--text-quaternary);
+    border-bottom: 1px solid var(--border-default);
+}
+
+.history-row {
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.history-row:hover {
+    background: var(--bg-card-hover);
+}
+
+.history-item-name {
+    color: var(--text-primary);
+}
+
+.history-recipient {
+    color: var(--primary-500);
+}
+
+/* ── Impact Cards ── */
+.impact-big-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .impact-big-card {
+    background: var(--bg-card);
+    border-color: var(--surface-glass-border);
+    box-shadow: none;
+}
+
+.impact-big-value {
+    color: var(--text-primary);
+}
+
+.impact-big-label {
+    color: var(--text-secondary);
+}
+
+.impact-big-sub {
+    color: var(--text-tertiary);
+}
+
+/* ── Chart Area ── */
+.chart-area {
+    background: var(--bg-card);
+}
+
+.chart-bar-label {
+    color: var(--text-quaternary);
+}
+
+.chart-legend {
+    color: var(--text-tertiary);
+}
+
+/* ── Milestone Cards ── */
+.milestone-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+}
+
+[data-theme="dark"] .milestone-card {
+    background: var(--bg-card);
+    border-color: var(--surface-glass-border);
+}
+
+.milestone-card h4 {
+    color: var(--text-primary);
+}
+
+.milestone-card p {
+    color: var(--text-tertiary);
+}
+
+/* ── Mini Chart ── */
+.mini-chart-title {
+    color: var(--text-secondary);
+}
+
+/* ── Mission Cards ── */
+.mission-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .mission-card {
+    background: var(--bg-card);
+    border-color: var(--surface-glass-border);
+    box-shadow: none;
+}
+
+.point-name {
+    color: var(--text-primary);
+}
+
+.point-address {
+    color: var(--text-tertiary);
+}
+
+.point-items {
+    color: var(--text-secondary);
+}
+
+.mission-meta {
+    color: var(--text-tertiary);
+}
+
+/* ── Available Missions ── */
+.available-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .available-card {
+    background: var(--bg-card);
+    border-color: var(--surface-glass-border);
+    box-shadow: none;
+}
+
+.avail-from {
+    color: var(--text-primary);
+}
+
+.avail-to {
+    color: var(--text-primary);
+}
+
+.avail-details {
+    color: var(--text-tertiary);
+}
+
+/* ── Schedule ── */
+.schedule-day {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+}
+
+[data-theme="dark"] .schedule-day {
+    border-color: var(--surface-glass-border);
+}
+
+.schedule-day-name {
+    color: var(--text-primary);
+}
+
+.schedule-day-date {
+    color: var(--text-tertiary);
+}
+
+/* ── Leaderboard ── */
+.podium-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .podium-card {
+    background: var(--bg-card);
+    border-color: var(--surface-glass-border);
+}
+
+.podium-name {
+    color: var(--text-primary);
+}
+
+.podium-points {
+    color: var(--text-secondary);
+}
+
+.podium-deliveries {
+    color: var(--text-tertiary);
+}
+
+.leaderboard-row {
+    border-bottom: 1px solid var(--border-light);
+}
+
+.leaderboard-row:hover {
+    background: var(--bg-card-hover);
+}
+
+.lb-name {
+    color: var(--text-primary);
+}
+
+.lb-deliveries {
+    color: var(--text-tertiary);
+}
+
+.lb-points {
+    color: var(--text-secondary);
+}
+
+/* ── Achievements Summary ── */
+.achievements-summary {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+}
+
+[data-theme="dark"] .achievements-summary {
+    border-color: var(--surface-glass-border);
+}
+
+.achiev-stat span {
+    color: var(--text-primary);
+}
+
+.achiev-stat {
+    color: var(--text-tertiary);
+}
+
+/* ── Section Heading ── */
+.section-heading {
+    color: var(--text-primary);
+}
+
+/* ── Verification Cards ── */
+.verification-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .verification-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: var(--surface-glass-border);
+    box-shadow: none;
+}
+
+.verify-info h3 {
+    color: var(--text-primary);
+}
+
+.verify-info p {
+    color: var(--text-tertiary);
+}
+
+.verify-meta {
+    color: var(--text-quaternary);
+}
+
+/* ── Flagged Cards ── */
+.flagged-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(251, 191, 36, 0.15);
+}
+
+.flagged-info h3 {
+    color: var(--text-primary);
+}
+
+.flagged-donor {
+    color: var(--text-tertiary);
+}
+
+.flagged-reason {
+    color: var(--text-tertiary);
+}
+
+.flagged-meta {
+    color: var(--text-quaternary);
+}
+
+/* ── Activity Feed ── */
+.activity-item {
+    border-bottom: 1px solid var(--border-light);
+}
+
+.activity-action {
+    color: var(--text-primary);
+}
+
+.activity-detail {
+    color: var(--text-tertiary);
+}
+
+.activity-time {
+    color: var(--text-quaternary);
+}
+
+/* ── Quick Actions ── */
+.quick-action-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+}
+
+[data-theme="dark"] .quick-action-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: var(--surface-glass-border);
+}
+
+.qa-label {
+    color: var(--text-secondary);
+}
+
+.qa-count {
+    color: var(--text-primary);
+}
+
+.qa-arrow {
+    color: var(--text-quaternary);
+}
+
+/* ── Analytics ── */
+.analytics-big-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .analytics-big-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: var(--surface-glass-border);
+}
+
+.analytics-big-card h3 {
+    color: var(--text-primary);
+}
+
+.ring-value {
+    color: var(--text-primary);
+}
+
+.ring-label {
+    color: var(--text-tertiary);
+}
+
+[data-theme="dark"] .analytics-ring svg circle:first-child {
+    stroke: rgba(255, 255, 255, 0.06);
+}
+
+.analytics-ring svg circle:first-child {
+    stroke: var(--border-light);
+}
+
+.breakdown-item {
+    color: var(--text-secondary);
+}
+
+.analytics-side-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    color: var(--text-tertiary);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .analytics-side-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: var(--surface-glass-border);
+    box-shadow: none;
+}
+
+.asc-value {
+    color: var(--text-primary);
+}
+
+.asc-label {
+    color: var(--text-tertiary);
+}
+
+/* ── Heatmap ── */
+.heatmap-placeholder {
+    color: var(--text-tertiary);
+}
+
+.heatmap-placeholder h3 {
+    color: var(--text-primary);
+}
+
+/* ── User Type Cards ── */
+.user-type-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .user-type-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: var(--surface-glass-border);
+}
+
+.utc-count {
+    color: var(--text-primary);
+}
+
+.utc-type {
+    color: var(--text-secondary);
+}
+
+.utc-verified {
+    color: var(--text-quaternary);
+}
+
+/* ── User Row ── */
+.user-row-name {
+    color: var(--text-primary);
+}
+
+/* ── Category Items ── */
+.category-item {
+    border-bottom: 1px solid var(--border-light);
+}
+
+.cat-name {
+    color: var(--text-primary);
+}
+
+.cat-count {
+    color: var(--text-tertiary);
+}
+
+/* ── Broadcast ── */
+.priority-btn {
+    border: 1px solid var(--border-default);
+    color: var(--text-tertiary);
+    background: var(--bg-card);
+}
+
+/* ── Pickup Items ── */
+.pickup-item {
+    border-bottom: 1px solid var(--border-light);
+}
+
+.pickup-volunteer {
+    color: var(--text-primary);
+}
+
+.pickup-food {
+    color: var(--text-tertiary);
+}
+
+/* ── Search Box ── */
+.search-box {
+    background: var(--bg-input);
+    border: 1px solid var(--border-default);
+}
+
+.search-box:focus-within {
+    background: var(--bg-input-focus);
+    border-color: var(--border-focus);
+}
+
+.search-box input {
+    color: var(--text-primary);
+}
+
+.search-box input::placeholder {
+    color: var(--text-quaternary);
+}
+
+/* ── Filter Tabs ── */
+.filter-tab {
+    color: var(--text-tertiary);
+}
+
+.filter-tab:hover {
+    color: var(--text-primary);
+    background: var(--bg-card-hover);
+}
+
+.filter-tab.active {
+    background: rgba(16, 185, 129, 0.08);
+    color: var(--primary-500);
+}
+
+[data-theme="dark"] .filter-tab.active {
+    color: var(--primary-400);
+}
+
+/* ── Filters Panel ── */
+.filters-panel {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-default);
+}
+
+[data-theme="dark"] .filters-panel {
+    background: var(--bg-card);
+}
+
+.filter-section h3 {
+    color: var(--text-primary);
+}
+
+.results-count {
+    color: var(--text-tertiary);
+}
+
+/* ── Modal ── */
+.modal-content {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-lg);
+}
+
+[data-theme="dark"] .modal-content {
+    background: #1f2937;
+    border-color: var(--surface-glass-border);
+}
+
+.modal-header h2 {
+    color: var(--text-primary);
+}
+
+.modal-subtitle {
+    color: var(--text-tertiary);
+}
+
+.form-label {
+    color: var(--text-secondary);
+}
+
+.form-input {
+    background: var(--bg-input);
+    border: 1px solid var(--border-default);
+    color: var(--text-primary);
+}
+
+.form-input:focus {
+    background: var(--bg-input-focus);
+    border-color: var(--border-focus);
+}
+
+.form-input::placeholder {
+    color: var(--text-quaternary);
+}
+
+/* ── Diet Tags ── */
+.diet-tag {
+    background: var(--bg-input);
+    color: var(--text-tertiary);
+    border: 1px solid var(--border-default);
+}
+
+[data-theme="dark"] .diet-tag {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: transparent;
+}
+
+/* ── Status Badge ── */
+.status-badge {
+    font-weight: 600;
+}
+
+/* ── Empty State ── */
+.empty-state-card {
+    background: var(--bg-card);
+    border: 1px dashed var(--border-default);
+    color: var(--text-tertiary);
+}
+
+.empty-state-card h3 {
+    color: var(--text-secondary);
+}
+
+/* ── Auth Pages ── */
+.auth-page {
+    background: var(--bg-body);
+}
+
+[data-theme="dark"] .auth-page {
+    background: var(--bg-body);
+}
+
+.auth-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-lg);
+}
+
+[data-theme="dark"] .auth-card {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--surface-glass-border);
+    box-shadow: none;
+}
+
+.auth-card h1 {
+    color: var(--text-primary);
+}
+
+.auth-subtitle {
+    color: var(--text-tertiary);
+}
+
+/* ── Route Map ── */
+.route-map-placeholder,
+.map-view-placeholder,
+.map-full {
+    background: var(--bg-card);
+    border: 1px dashed var(--border-default);
+}
+
+[data-theme="dark"] .route-map-placeholder,
+[data-theme="dark"] .map-view-placeholder,
+[data-theme="dark"] .map-full {
+    background: rgba(255, 255, 255, 0.02);
+    border-color: var(--surface-glass-border);
+}
+
+.route-node {
+    color: var(--text-secondary);
+}
+
+.route-summary {
+    color: var(--text-tertiary);
+}
+
+/* ── Photo Upload ── */
+.photo-upload-area {
+    background: var(--bg-input);
+    border: 2px dashed var(--border-default);
+    color: var(--text-tertiary);
+}
+
+[data-theme="dark"] .photo-upload-area {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: var(--surface-glass-border);
+}
+
+/* ── Topbar Select ── */
+.topbar-select {
+    background: var(--bg-input);
+    border: 1px solid var(--border-default);
+    color: var(--text-primary);
+}
+
+/* ── View Toggle ── */
+.vt-btn {
+    background: var(--bg-input);
+    color: var(--text-quaternary);
+    border: 1px solid var(--border-default);
+}
+
+.vt-btn.active {
+    background: var(--primary-500);
+    color: #fff;
+    border-color: var(--primary-500);
+}
+
+[data-theme="dark"] .vt-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: transparent;
+}
+
+/* ── Inner Navbar ── */
+.navbar-inner {
+    background: var(--bg-topbar);
+    border-bottom: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .navbar-inner {
+    background: rgba(10, 15, 26, 0.95);
+    backdrop-filter: blur(20px);
+    box-shadow: none;
+}
+
+.navbar-icon-btn {
+    background: var(--bg-input);
+    border: 1px solid var(--border-default);
+    color: var(--text-tertiary);
+}
+
+.navbar-icon-btn:hover {
+    background: var(--bg-card-hover);
+    color: var(--text-primary);
+}
+
+/* ── Pickup Slot Buttons ── */
+.pickup-slot-btn {
+    background: var(--bg-input);
+    border: 1px solid var(--border-default);
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .pickup-slot-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--surface-glass-border);
+}
+
+/* ── Expiry Selector ── */
+.expiry-option {
+    background: var(--bg-input);
+    border: 1px solid var(--border-default);
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .expiry-option {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--surface-glass-border);
+}
+
+/* ── Review Card ── */
+.review-card {
+    background: var(--bg-input);
+    border: 1px solid var(--border-default);
+}
+
+[data-theme="dark"] .review-card {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--surface-glass-border);
+}
+
+.review-card h3 {
+    color: var(--text-primary);
+}
+
+/* ── Claim Modal ── */
+.claim-title {
+    color: var(--text-primary);
+}
+
+.claim-donor {
+    color: var(--text-tertiary);
+}
+
+.claim-details-grid {
+    color: var(--text-secondary);
+}
+
+.claim-section-title {
+    color: var(--text-primary);
+}
+
+/* ── Claimed Cards ── */
+.claimed-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .claimed-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: var(--surface-glass-border);
+    box-shadow: none;
+}
+
+.claimed-info h3 {
+    color: var(--text-primary);
+}
+
+.claimed-donor {
+    color: var(--text-tertiary);
+}
+
+.claimed-volunteer {
+    color: var(--text-secondary);
+}
+
+/* ── Food Card in Recipient ── */
+.food-card-photo {
+    background: var(--bg-input);
+}
+
+[data-theme="dark"] .food-card-photo {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+/* ── Admin Badge Text ── */
+.admin-badge-text {
+    color: #60a5fa;
+}
+
+/* ── FAB ── */
+.fab {
+    box-shadow: var(--shadow-glow-strong);
+}
+
+/* ── Landing page text overrides ── */
+[data-theme="dark"] .hero-title,
+[data-theme="dark"] .feature-card h3,
+[data-theme="dark"] .step-title,
+[data-theme="dark"] .stat-value,
+[data-theme="dark"] .cta-title,
+[data-theme="dark"] .footer-brand {
+    color: #fff;
+}
+
+.hero-title {
+    color: var(--text-primary);
+}
+
+.hero-description {
+    color: var(--text-tertiary);
+}
+
+.hero-badge {
+    color: var(--text-tertiary);
+}
+
+.stat-value {
+    color: var(--text-primary);
+}
+
+.stat-label {
+    color: var(--text-quaternary);
+}
+
+.step-card {
+    background: var(--bg-card);
+    border-color: var(--border-default);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .step-card {
+    background: var(--surface-glass);
+    border-color: var(--surface-glass-border);
+    box-shadow: none;
+}
+
+.step-title {
+    color: var(--text-primary);
+}
+
+.step-description {
+    color: var(--text-tertiary);
+}
+
+.feature-card {
+    background: var(--bg-card);
+    border-color: var(--border-default);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .feature-card {
+    background: var(--surface-glass);
+    border-color: var(--surface-glass-border);
+    box-shadow: none;
+}
+
+.feature-title {
+    color: var(--text-primary);
+}
+
+.feature-description {
+    color: var(--text-tertiary);
+}
+
+.feature-card:hover {
+    background: var(--bg-card-hover);
+    box-shadow: var(--shadow-md);
+}
+
+.cta-title {
+    color: var(--text-primary);
+}
+
+.cta-description {
+    color: var(--text-tertiary);
+}
+
+.footer {
+    border-top-color: var(--border-default);
+}
+
+.footer-brand {
+    color: var(--text-primary);
+}
+
+.footer-tagline {
+    color: var(--text-quaternary);
+}
+
+.footer-divider {
+    background: var(--border-default);
+}
+
+.footer-copy {
+    color: var(--text-quaternary);
+}
+
+/* ── Dark theme grid bg for hero ── */
+[data-theme="dark"] .hero-grid-bg {
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+
+/* ── Auth Page Theme Overrides ── */
+.auth-page {
+    background: var(--bg-body);
+}
+
+.auth-bg-pattern {
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+}
+
+[data-theme="dark"] .auth-bg-pattern {
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+}
+
+.auth-card {
+    background: var(--bg-surface);
+    border-color: var(--border-default);
+    box-shadow: var(--shadow-lg);
+}
+
+[data-theme="dark"] .auth-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: var(--surface-glass-border);
+    box-shadow: none;
+}
+
+.auth-brand {
+    color: var(--text-primary);
+}
+
+.auth-title {
+    color: var(--text-primary);
+}
+
+.auth-subtitle {
+    color: var(--text-tertiary);
+}
+
+.auth-footer-text {
+    color: var(--text-quaternary);
+}
+
+.auth-link {
+    color: var(--primary-500);
+}
+
+[data-theme="dark"] .auth-link {
+    color: var(--primary-400);
+}
+
+.form-label {
+    color: var(--text-secondary);
+}
+
+.form-link {
+    color: var(--primary-500);
+}
+
+.form-input {
+    background: var(--bg-input);
+    border-color: var(--border-default);
+    color: var(--text-primary);
+}
+
+.form-input:focus {
+    border-color: var(--border-focus);
+}
+
+.form-input::placeholder {
+    color: var(--text-quaternary);
+}
+
+.input-icon {
+    color: var(--text-quaternary);
+}
+
+.input-toggle {
+    color: var(--text-quaternary);
+}
+
+.input-toggle:hover {
+    color: var(--text-secondary);
+}
+
+.oauth-btn {
+    background: var(--bg-input);
+    border-color: var(--border-default);
+    color: var(--text-secondary);
+}
+
+.oauth-btn:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-default);
+}
+
+[data-theme="dark"] .oauth-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--surface-glass-border);
+}
+
+[data-theme="dark"] .oauth-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.auth-divider {
+    color: var(--text-quaternary);
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    background: var(--border-default);
+}
+
+[data-theme="dark"] .auth-divider::before,
+[data-theme="dark"] .auth-divider::after {
+    background: var(--surface-glass-border);
+}
+
+.auth-step {
+    color: var(--text-quaternary);
+}
+
+.auth-step.active {
+    color: var(--primary-500);
+}
+
+[data-theme="dark"] .auth-step.active {
+    color: var(--primary-400);
+}
+
+.auth-step-dot {
+    background: var(--bg-input);
+    border-color: var(--border-default);
+}
+
+[data-theme="dark"] .auth-step-dot {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--surface-glass-border);
+}
+
+.auth-step-line {
+    background: var(--border-default);
+}
+
+[data-theme="dark"] .auth-step-line {
+    background: var(--surface-glass-border);
+}
+
+.role-card {
+    background: var(--bg-input);
+    border-color: var(--border-default);
+    color: var(--text-secondary);
+}
+
+.role-card:hover {
+    background: var(--bg-card-hover);
+}
+
+[data-theme="dark"] .role-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: var(--surface-glass-border);
+}
+
+[data-theme="dark"] .role-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.role-info h3 {
+    color: var(--text-primary);
+}
+
+.role-info p {
+    color: var(--text-quaternary);
+}
+
+.role-icon-wrap {
+    background: rgba(16, 185, 129, 0.08);
+}
+
+[data-theme="dark"] .role-icon-wrap {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.highlight-role {
+    color: var(--primary-500);
+}
+
+[data-theme="dark"] .highlight-role {
+    color: var(--primary-400);
+}

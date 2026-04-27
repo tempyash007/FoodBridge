@@ -6,6 +6,7 @@ const {
   markAllAsRead,
   deleteNotification,
   getUnreadCount,
+  getBroadcasts,
 } = require('../controllers/notification.controller');
 
 const router = Router();
@@ -14,6 +15,9 @@ const router = Router();
 // All routes require authentication (any logged-in user)
 // ---------------------------------------------------------------------------
 router.use(authenticateToken);
+
+// GET /api/notifications/broadcasts — broadcasts for user's role
+router.get('/broadcasts', getBroadcasts);
 
 // GET /api/notifications/unread-count — navbar badge (must be before /:notification_id)
 router.get('/unread-count', getUnreadCount);

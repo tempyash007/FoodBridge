@@ -78,6 +78,15 @@ const browseListings = asyncHandler(async (req, res) => {
     }
   }
 
+  // ---- FIX 2: Exclude listings already claimed by this recipient ----
+  conditions.push(
+    `fl.listing_id NOT IN (
+      SELECT listing_id FROM claims
+      WHERE recipient_id = $${params.push(req.user.userId)}
+      AND status != 'cancelled'
+    )`
+  );
+
   const whereClause = `WHERE ${conditions.join(' AND ')}`;
 
   // ---- Sort mode ----

@@ -174,6 +174,36 @@ const getDashboard = asyncHandler(async (req, res) => {
     est_duration_min: m.est_duration_min || null,
   }));
 
+  // --- Achievements Computation ---
+  const achievementsQuery = await pool.query(
+    `SELECT
+       COUNT(*) AS total_deliveries,
+       COUNT(*) FILTER (WHERE actual_duration_min < 20) AS fast_deliveries,
+       COUNT(*) FILTER (WHERE EXTRACT(HOUR FROM delivery_time AT TIME ZONE 'UTC') < 9) AS early_deliveries,
+       COUNT(*) FILTER (WHERE EXTRACT(HOUR FROM delivery_time AT TIME ZONE 'UTC') >= 20) AS night_deliveries,
+       COALESCE(SUM(est_distance_km), 0) AS total_distance
+     FROM delivery_missions
+     WHERE volunteer_id = $1 AND status = 'delivered'`,
+    [volunteerId]
+  );
+  
+  const achStats = achievementsQuery.rows[0] || {};
+  const totDeliv = parseInt(achStats.total_deliveries) || 0;
+  const fastDeliv = parseInt(achStats.fast_deliveries) || 0;
+  const earlyDeliv = parseInt(achStats.early_deliveries) || 0;
+  const nightDeliv = parseInt(achStats.night_deliveries) || 0;
+  const totalDist = parseFloat(achStats.total_distance) || 0;
+
+  const achievements = [
+    { title: 'First Delivery', desc: 'Completed your first rescue', icon: '🚀', earned: totDeliv >= 1, progress: Math.min(100, totDeliv * 100) },
+    { title: 'Speed Demon', desc: '10 deliveries under 20 min', icon: '⚡', earned: fastDeliv >= 10, progress: Math.min(100, (fastDeliv / 10) * 100) },
+    { title: '100 Club', desc: 'Completed 100 deliveries', icon: '💯', earned: totDeliv >= 100, progress: Math.min(100, (totDeliv / 100) * 100) },
+    { title: 'Early Bird', desc: '20 deliveries before 9 AM', icon: '🌅', earned: earlyDeliv >= 20, progress: Math.min(100, (earlyDeliv / 20) * 100) },
+    { title: 'Marathon Runner', desc: '50 km total distance', icon: '🏃', earned: totalDist >= 50, progress: Math.min(100, (totalDist / 50) * 100) },
+    { title: 'Night Owl', desc: '10 deliveries after 8 PM', icon: '🦉', earned: nightDeliv >= 10, progress: Math.min(100, (nightDeliv / 10) * 100) },
+    { title: 'Legendary', desc: '500 deliveries milestone', icon: '🔥', earned: totDeliv >= 500, progress: Math.min(100, (totDeliv / 500) * 100) },
+  ];
+
   return res.status(200).json({
     success: true,
     data: {
@@ -183,6 +213,7 @@ const getDashboard = asyncHandler(async (req, res) => {
         points_earned: totalDeliveries * 25,
         avg_rating: stats.avg_rating ? parseFloat(stats.avg_rating) : null,
       },
+      achievements: achievements,
       optimized_route: optimizedRoute,
       current_deliveries: currentDeliveries,
     },

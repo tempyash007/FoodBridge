@@ -4,13 +4,33 @@ const asyncHandler = require('../utils/asyncHandler');
 // ============================================================================
 // GET /api/donor/dashboard
 // ============================================================================
+// ============================================================================
+// GET /api/donor/dashboard
+// ============================================================================
 const getDashboard = asyncHandler(async (req, res) => {
   const donorId = req.user.userId;
 
-  // 1. Stats from impact_metrics
+  // Auto-expire listings for this donor before fetching stats
+  await pool.query(
+    `UPDATE food_listings
+     SET status = 'expired', updated_at = NOW()
+     WHERE donor_id = $1
+       AND status = 'available'
+       AND expiry_time < NOW()`,
+    [donorId]
+  );
+
+  // 1. Stats — computed live from actual deliveries (source of truth)
   const statsResult = await pool.query(
-    `SELECT meals_saved, co2_prevented_kg, waste_diverted_kg
-     FROM impact_metrics WHERE user_id = $1`,
+    `SELECT
+     COALESCE(SUM(COALESCE(fl.estimated_servings, ROUND(fl.quantity * 2)::int)), 0) AS meals_saved,
+     COALESCE(SUM(fl.quantity * 2.5), 0) AS co2_prevented_kg,
+     COALESCE(SUM(fl.quantity), 0)       AS waste_diverted_kg
+   FROM food_listings fl
+   JOIN claims c ON fl.listing_id = c.listing_id
+   JOIN delivery_missions dm ON c.claim_id = dm.claim_id
+   WHERE fl.donor_id = $1
+     AND dm.status = 'delivered'`,
     [donorId]
   );
   const metrics = statsResult.rows[0] || {
@@ -73,20 +93,21 @@ const getDashboard = asyncHandler(async (req, res) => {
     dietary_tags: tagsMap[l.listing_id] || [],
   }));
 
-  // 3. Pickup requests — missions that are assigned or in_transit for this donor's listings
+  // 3. Pickup requests — missions that are active for this donor's listings
   const pickupResult = await pool.query(
     `SELECT
-       u.first_name || ' ' || LEFT(u.last_name, 1) || '.' AS volunteer_name,
-       fl.title AS listing_title,
-       dm.est_duration_min,
-       dm.status AS mission_status
-     FROM food_listings fl
-     JOIN claims c ON fl.listing_id = c.listing_id
-     JOIN delivery_missions dm ON c.claim_id = dm.claim_id
-     JOIN users u ON dm.volunteer_id = u.user_id
-     WHERE fl.donor_id = $1
-       AND dm.status IN ('assigned', 'in_transit')
-     ORDER BY dm.pickup_time ASC`,
+     u.first_name || ' ' || LEFT(u.last_name, 1) || '.' AS volunteer_name,
+     fl.title AS listing_title,
+     dm.est_duration_min,
+     dm.status AS mission_status
+   FROM food_listings fl
+   JOIN claims c ON fl.listing_id = c.listing_id
+   JOIN delivery_missions dm ON c.claim_id = dm.claim_id
+   JOIN volunteer_profiles vp ON dm.volunteer_id = vp.volunteer_id
+   JOIN users u ON vp.user_id = u.user_id
+   WHERE fl.donor_id = $1
+     AND dm.status IN ('assigned', 'in_transit', 'picked_up')
+   ORDER BY dm.pickup_time ASC`,
     [donorId]
   );
 
@@ -111,20 +132,21 @@ const getHistory = asyncHandler(async (req, res) => {
 
   const result = await pool.query(
     `SELECT
-       fl.title AS listing_title,
-       fl.created_at::date AS date,
-       fl.quantity,
-       fl.quantity_unit,
-       o.org_name AS recipient_org,
-       r.rating
-     FROM food_listings fl
-     LEFT JOIN claims c ON fl.listing_id = c.listing_id
-     LEFT JOIN organizations o ON c.recipient_id = o.user_id
-     LEFT JOIN delivery_missions dm ON c.claim_id = dm.claim_id
-     LEFT JOIN reviews r ON dm.mission_id = r.mission_id AND r.reviewer_id = $1
-     WHERE fl.donor_id = $1 AND fl.status = 'delivered'
-     ORDER BY fl.created_at DESC
-     LIMIT $2 OFFSET $3`,
+   fl.title AS listing_title,
+   fl.created_at::date AS date,
+   fl.quantity,
+   fl.quantity_unit,
+   o.org_name AS recipient_org,
+   u.first_name || ' ' || LEFT(u.last_name,1) || '.' AS volunteer_name
+FROM food_listings fl
+LEFT JOIN claims c ON fl.listing_id = c.listing_id
+LEFT JOIN organizations o ON c.recipient_id = o.user_id
+LEFT JOIN delivery_missions dm ON c.claim_id = dm.claim_id
+LEFT JOIN volunteer_profiles vp ON dm.volunteer_id = vp.volunteer_id
+LEFT JOIN users u ON vp.user_id = u.user_id
+WHERE fl.donor_id = $1 AND fl.status = 'delivered'
+ORDER BY fl.created_at DESC
+LIMIT $2 OFFSET $3`,
     [donorId, Number(limit), offset]
   );
 
@@ -199,10 +221,18 @@ const exportHistory = asyncHandler(async (req, res) => {
 const getImpact = asyncHandler(async (req, res) => {
   const donorId = req.user.userId;
 
-  // 1. Totals from impact_metrics
+  // 1. Totals — computed live from actual delivered missions
+  // 1. Totals — computed live from actual delivered missions
   const totalsResult = await pool.query(
-    `SELECT meals_saved, co2_prevented_kg, waste_diverted_kg
-     FROM impact_metrics WHERE user_id = $1`,
+    `SELECT
+     COALESCE(SUM(COALESCE(fl.estimated_servings, ROUND(fl.quantity * 2)::int)), 0) AS meals_saved,
+     COALESCE(SUM(fl.quantity * 2.5), 0) AS co2_prevented_kg,
+     COALESCE(SUM(fl.quantity), 0)        AS waste_diverted_kg
+   FROM food_listings fl
+   JOIN claims c ON fl.listing_id = c.listing_id
+   JOIN delivery_missions dm ON c.claim_id = dm.claim_id
+   WHERE fl.donor_id = $1
+     AND dm.status = 'delivered'`,
     [donorId]
   );
   const totals = totalsResult.rows[0] || {
@@ -211,19 +241,28 @@ const getImpact = asyncHandler(async (req, res) => {
 
   // 2. Weekly trend — last 7 days, group by day
   const trendResult = await pool.query(
-    `SELECT
-       TO_CHAR(dm.delivery_time, 'Dy') AS day,
-       dm.delivery_time::date AS date,
-       COALESCE(SUM(fl.estimated_servings), 0) AS meals_saved,
-       COALESCE(SUM(fl.quantity), 0) AS waste_diverted_kg
-     FROM food_listings fl
-     JOIN claims c ON fl.listing_id = c.listing_id
-     JOIN delivery_missions dm ON c.claim_id = dm.claim_id
-     WHERE fl.donor_id = $1
-       AND dm.delivery_time >= NOW() - INTERVAL '7 days'
-       AND dm.status = 'delivered'
-     GROUP BY dm.delivery_time::date, TO_CHAR(dm.delivery_time, 'Dy')
-     ORDER BY dm.delivery_time::date ASC`,
+    `WITH days AS (
+      SELECT generate_series(
+        CURRENT_DATE - INTERVAL '6 days',
+        CURRENT_DATE,
+        INTERVAL '1 day'
+      )::date AS date
+    )
+    SELECT
+      TO_CHAR(days.date, 'Dy') AS day,
+      days.date,
+      COALESCE(SUM(COALESCE(fl.estimated_servings, ROUND(fl.quantity * 2)::int)), 0) AS meals_saved,
+      COALESCE(SUM(fl.quantity), 0) AS waste_diverted_kg
+    FROM days
+    LEFT JOIN delivery_missions dm
+      ON dm.delivery_time::date = days.date
+      AND dm.status = 'delivered'
+    LEFT JOIN claims c ON dm.claim_id = c.claim_id
+    LEFT JOIN food_listings fl
+      ON c.listing_id = fl.listing_id
+      AND fl.donor_id = $1
+    GROUP BY days.date
+    ORDER BY days.date ASC`,
     [donorId]
   );
 
