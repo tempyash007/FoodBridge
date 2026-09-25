@@ -1,37 +1,70 @@
-# 🥗 FoodBridge
+# 🍲 FoodBridge
 
-> An automated platform connecting surplus food donors with local shelters and communities to minimize food waste.
-
----
-
-## 📌 Project Overview
-
-**FoodBridge** bridges the gap between food surplus and food scarcity. The platform enables donors (restaurants, event hosts, households) to list extra food, while verified shelters and NGOs can discover, request, and claim food items in real time.
+> An automated surplus food management and distribution platform connecting donors, recipient organizations, and volunteers to minimize food waste.
 
 ---
 
-## ✨ Key Features
+## 📌 Overview
 
-- **User Interface & UX:** Responsive user dashboards designed for donors and recipient organizations.
-- **Real-Time Listings & Requests:** Instant availability tracking for food donations, quantity, and pickup windows.
-- **API Integration:** Robust REST API services handling user authentication, food posts, and claim statuses.
-- **State Management:** Global state management for user sessions, authentication, and notification banners.
-- **Form Validation & Media Handling:** Client-side validated food post creation forms with image upload support.
+**FoodBridge** is a full-stack platform designed to facilitate seamless food donation workflows. It connects food donors (restaurants, caterers, households) with recipient organizations (shelters, NGOs) and logistics volunteers to ensure safe and timely delivery of surplus food.
+
+---
+
+## ✨ Key System Features
+
+* **Multi-Role Portals:**
+  * **Donor Dashboard:** Create, update, and manage surplus food listings with quantity, category, and expiry window details.
+  * **Recipient Portal:** Search, filter, and claim available food donations in real time based on location and requirements.
+  * **Volunteer Dashboard:** Track assigned food delivery tasks, status updates, and pickup/drop-off logistics.
+  * **Admin Panel:** Comprehensive system management, user verification, category configuration, and analytics.
+
+* **Security & Authentication:**
+  * Role-Based Access Control (RBAC) supporting Donors, Recipients, Volunteers, and Admins.
+  * Secure JSON Web Token (JWT) authentication, password hashing (`bcryptjs`), and cookie handling.
+  * Input validation using `express-validator` and password recovery workflows via `nodemailer`.
+
+* **Async Notifications & Cache:**
+  * Automated email notifications and background event queuing powered by **Redis** (`ioredis`) and **Nodemailer**.
+
+* **Comprehensive Testing & Quality Assurance:**
+  * Backend API integration tests using **Jest** and **Supertest**.
+  * Frontend component unit tests using **Vitest** and **React Testing Library**.
 
 ---
 
 ## 🛠 Tech Stack
 
-- **Frontend:** React.js, Tailwind CSS, Axios, Context API
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB
-- **Authentication:** JSON Web Tokens (JWT)
+### **Frontend**
+* **Framework:** React 19 (Vite, TypeScript)
+* **Routing & UI:** React Router DOM v7, Lucide React icons
+* **Testing:** Vitest, React Testing Library, JSDOM
+
+### **Backend**
+* **Runtime & Framework:** Node.js, Express 5
+* **Database:** PostgreSQL (`pg`)
+* **Caching & Queue:** Redis (`ioredis`)
+* **Auth & Security:** JWT (`jsonwebtoken`), Bcryptjs, Express Validator
+* **Email Service:** Nodemailer
+* **Testing:** Jest, Supertest
 
 ---
 
-## 🚀 Getting Started
+## 📁 Project Structure
 
-### 1. Clone the repository
-```bash
-git clone https://github.com/tempyash007/FoodBridge.git
-cd FoodBridge
+```text
+FoodBridge/
+├── backend/                # Node.js + Express + PostgreSQL API
+│   ├── src/
+│   │   ├── config/         # Database & Redis configurations
+│   │   ├── controllers/    # Handlers for Auth, Donor, Recipient, Admin, Volunteer
+│   │   ├── middleware/     # Auth, RBAC, and error handling middleware
+│   │   ├── routes/         # Express API route definitions
+│   │   └── services/       # Email & notification services
+│   └── tests/              # Jest API integration tests
+│
+└── frontend/               # React 19 + Vite + TypeScript Client
+    ├── src/
+    │   ├── pages/          # Donor, Recipient, Volunteer, Admin & Auth pages
+    │   ├── components/     # Reusable UI components
+    │   └── services/       # API call handlers
+    └── tests/              # Vitest component tests
